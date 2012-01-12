@@ -46,9 +46,17 @@ aptitude -ry install r-base r-base-dev r-recommended
     # activar sangría automática
     
 # gedit plugins
-aptitude -ry install gedit-developer-plugins gedit-latex-plugin gedit-plugins
+aptitude -ry install gedit-developer-plugins gedit-plugins
   # watch out! the latex plugin installs LaTeX!!
   # We should install it beforehand
+
+# gedit-latex-plugin
+# In ubuntu 11.10 repos there is a version that works only with gedit-2.x
+# but Oneiric ships gedit-3.x. Need to install from
+#https://launchpad.net/ubuntu/oneiric/i386/gedit-latex-plugin/3.3.1-1~oneiric1
+wget http://launchpadlibrarian.net/83566981/gedit-latex-plugin_3.3.1-1~oneiric1_all.deb
+gdebi -n gedit-latex-plugin_3.3.1-1~oneiric1_all.deb
+rm gedit-latex-plugin_3.3.1-1~oneiric1_all.deb
 
 # gedit-r-plugin
 # in ubuntu 11.10 repositories there is a Gtk2 outdated version
