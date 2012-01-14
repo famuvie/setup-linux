@@ -39,6 +39,11 @@ aptitude update
 # Core R, recommended and development packages (for compilation of sources)
 aptitude -ry install r-base r-base-dev r-recommended
 
+# RStudio
+wget http://download1.rstudio.org/rstudio-0.94.110-i386.deb
+gdebi -n rstudio-0.94.110-i386.deb
+rm rstudio-0.94.110-i386.deb
+
 # gedit preferences
     # TODO: make automatically (?)
     # ancho del tabulador: 4
@@ -67,6 +72,7 @@ wget http://sourceforge.net/projects/rgedit/files/latest/download?source=files -
 mkdir -p .local/share/gedit/plugins/
 cd .local/share/gedit/plugins
 tar -xf ~/tmp_rgedit.tar.gz
+rm ~/tmp_rgedit.tar.gz
 
 # Activate interesting plugins:
 # - R integration (RCtrl)
@@ -83,3 +89,5 @@ tar -xf ~/tmp_rgedit.tar.gz
 # .gconf/apps/gedit-2/plugins/%gconf.xml
 # (¿gconftool-2 sirve para eso?)
 
+# Bazaar 
+aptitude -ry install bzr-explorer bzr-svn
