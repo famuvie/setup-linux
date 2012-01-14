@@ -1,5 +1,4 @@
 #!/bin/bash
-# Execute with root privileges (sudo)
 
 ubuntu_codename=`lsb_release -sc`
 
@@ -7,12 +6,12 @@ ubuntu_codename=`lsb_release -sc`
 
 apt-get install aptitude
 
-# dumb change
+
 
 ### Set up repositories ###
 
 # Bazaar version control
-add-apt-repository ppa:bzr/ppa
+sudo add-apt-repository ppa:bzr/ppa
 
 # LibreOffice
 sudo add-apt-repository ppa:libreoffice/ppa
@@ -21,15 +20,15 @@ sudo add-apt-repository ppa:libreoffice/ppa
 
 # GIS software (Ubuntugis)
 # unstable, por el problema de GRASS con wxpython
-add-apt-repository ppa:ubuntugis/ubuntugis-unstable
+sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
 
 # R-project
-echo 'deb http://cran.r-project.org/bin/linux/ubuntu' $ubuntu_codename '/' > /etc/apt/sources.list.d/cran-r-ppa-$ubuntu_codename.list
+sudo echo 'deb http://cran.r-project.org/bin/linux/ubuntu' $ubuntu_codename '/' > /etc/apt/sources.list.d/cran-r-ppa-$ubuntu_codename.list
 gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9 gpg -a --export E084DAB9 | sudo apt-key add - 
 
 
 # Update repository information
-aptitude update
+sudo aptitude update
 
 
 
@@ -37,21 +36,15 @@ aptitude update
 ### Install software ###
 
 # Core R, recommended and development packages (for compilation of sources)
-aptitude -ry install r-base r-base-dev r-recommended
+sudo aptitude -ry install r-base r-base-dev r-recommended
 
 # RStudio
 wget http://download1.rstudio.org/rstudio-0.94.110-i386.deb
-gdebi -n rstudio-0.94.110-i386.deb
+sudo gdebi -n rstudio-0.94.110-i386.deb
 rm rstudio-0.94.110-i386.deb
 
-# gedit preferences
-    # TODO: make automatically (?)
-    # ancho del tabulador: 4
-    # usar espacios en lugar de tabuladores
-    # activar sangría automática
-    
 # gedit plugins
-aptitude -ry install gedit-developer-plugins gedit-plugins
+sudo aptitude -ry install gedit-developer-plugins gedit-plugins
   # watch out! the latex plugin installs LaTeX!!
   # We should install it beforehand
 
@@ -60,7 +53,7 @@ aptitude -ry install gedit-developer-plugins gedit-plugins
 # but Oneiric ships gedit-3.x. Need to install from
 #https://launchpad.net/ubuntu/oneiric/i386/gedit-latex-plugin/3.3.1-1~oneiric1
 wget http://launchpadlibrarian.net/83566981/gedit-latex-plugin_3.3.1-1~oneiric1_all.deb
-gdebi -n gedit-latex-plugin_3.3.1-1~oneiric1_all.deb
+sudo gdebi -n gedit-latex-plugin_3.3.1-1~oneiric1_all.deb
 rm gedit-latex-plugin_3.3.1-1~oneiric1_all.deb
 
 # gedit-r-plugin
@@ -85,9 +78,23 @@ rm ~/tmp_rgedit.tar.gz
 # - SyncTeX (synctex)
 # - Tamaño del texto (textsize)
 # - Terminal empotrado (terminal)
-# TODO: do it automatically editting
+
+# In Gnome 2.x I do it automatically editting
 # .gconf/apps/gedit-2/plugins/%gconf.xml
-# (¿gconftool-2 sirve para eso?)
+# and using gconftool-2 as a CLI 
+#gconftool-2 --set /apps/gedit-2/plugins/active-plugins [latex,changecase,filebrowser,docinfo,wordcompletion,time,terminal,externaltools,multiedit,modelines,bracketcompletion,synctex,codecomment,spell,textsize,RCtrl] --type=list --list-type=string
+
+# In Gnome 3.x the CLI is gsettings:
+gsettings set org.gnome.gedit.plugins active-plugins "['latex', 'changecase', 'filebrowser', 'docinfo', 'wordcompletion', 'time', 'terminal', 'externaltools', 'multiedit', 'modelines', 'bracketcompletion', 'synctex', 'codecomment', 'spell', 'textsize', 'RCtrl']"
+
+# gedit preferences
+    # ancho del tabulador: 4
+    # usar espacios en lugar de tabuladores
+    # activar sangría automática
+gsettings set org.gnome.gedit.preferences.editor tabs-size 4
+gsettings set org.gnome.gedit.preferences.editor insert-spaces true
+gsettings set org.gnome.gedit.preferences.editor auto-indent true
+
 
 # Bazaar 
-aptitude -ry install bzr-explorer bzr-svn
+sudo aptitude -ry install bzr-explorer bzr-svn
