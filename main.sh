@@ -98,3 +98,6 @@ gsettings set org.gnome.gedit.preferences.editor auto-indent true
 
 # Bazaar 
 sudo aptitude -ry install bzr-explorer bzr-svn
+
+# GDAL and Proj4
+sudo aptitude -ry install libgdal-dev libproj-dev
