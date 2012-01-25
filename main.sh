@@ -16,7 +16,8 @@ sudo add-apt-repository ppa:bzr/ppa
 # LibreOffice
 sudo add-apt-repository ppa:libreoffice/ppa
 
-# LaTeX ## TODO
+# LaTeX ##
+# There is no PPA for texlive
 
 # GIS software (Ubuntugis)
 # unstable, por el problema de GRASS con wxpython
@@ -34,6 +35,24 @@ sudo aptitude update
 
 
 ### Install software ###
+
+# TeXLive (latest)
+# Full install with default options except:
+#  - only english and spanish documentation
+#  - make symbolic links in system directories
+# It takes a while
+wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+tar -xf install-tl-unx.tar.gz
+rm install-tl-unx.tar.gz
+cd install-tl-*
+sudo aptitude -ry install perl-tk 
+sudo ./install-tl -profile ../texlive.tlpdb 
+tlversion=`grep -o 201. install-tl.log`
+sudo bash -c "echo -e 'export MANPATH=/usr/local/texlive/'$tlversion'/texmf/doc/man/:\$MANPATH\nexport INFOPATH=/usr/local/texlive/'$tlversion'/texmf/doc/info/:\$INFOPATH\nexport PATH=/usr/local/texlive/'$tlversion'/bin/i386-linux/:\$PATH' >> /etc/bash.bashrc"
+cd ..
+rm -r install-tl-*
+# Command for further updating in the future
+# sudo tlmgr update --all
 
 # Core R, recommended and development packages (for compilation of sources)
 sudo aptitude -ry install r-base r-base-dev r-recommended

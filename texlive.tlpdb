@@ -1,0 +1,17 @@
+name 00texlive.installation
+category TLCore
+depend opt_location:http://ftp.eq.uc.pt/software/TeX/systems/texlive/tlnet
+depend opt_autobackup:1
+depend opt_backupdir:tlpkg/backups
+depend opt_create_formats:1
+depend opt_desktop_integration:1
+depend opt_file_assocs:1
+depend opt_post_code:1
+depend opt_sys_bin:/usr/local/bin
+depend opt_sys_info:/usr/local/info
+depend opt_sys_man:/usr/local/man
+depend opt_install_docfiles:1
+depend opt_install_srcfiles:1
+depend opt_w32_multi_user:0
+depend setting_available_architectures:i386-linux
+
