@@ -120,3 +120,15 @@ sudo aptitude -ry install bzr-explorer bzr-svn
 
 # GDAL and Proj4
 sudo aptitude -ry install libgdal-dev libproj-dev
+
+
+
+
+### Bug corrections and workarounds ###
+
+# rubber and epstopdf
+# http://forums.linuxmint.com/viewtopic.php?f=47&t=49701
+sudo cp /usr/share/rubber/rules.ini /usr/share/rubber/rules.ini.bak
+sudo bash -c 'sed "s/= epstopdf/= bash epstopdf/" /usr/share/rubber/rules.ini.bak > /usr/share/rubber/rules.ini'
+
+
