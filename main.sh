@@ -2,11 +2,16 @@
 
 ubuntu_codename=`lsb_release -sc`
 
+# Mint and Ubuntu correspondence
+if [ $ubuntu_codename=='lisa' ]; then ubuntu_codename='oneiric'; fi
+
 ### Install basic tools ###
 
-apt-get install aptitude
+sudo apt-get install aptitude guake skype
 
-
+## TODO: 
+## Configure guake to be run at the begining of the session and get the transparency right
+## alias ll = ls -l for Mint
 
 ### Set up repositories ###
 
@@ -24,7 +29,7 @@ sudo add-apt-repository ppa:libreoffice/ppa
 sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
 
 # R-project
-sudo echo 'deb http://cran.r-project.org/bin/linux/ubuntu' $ubuntu_codename '/' > /etc/apt/sources.list.d/cran-r-ppa-$ubuntu_codename.list
+sudo bash -c "echo 'deb http://cran.r-project.org/bin/linux/ubuntu' $ubuntu_codename'/' > /etc/apt/sources.list.d/cran-r-ppa-$ubuntu_codename.list"
 gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9 gpg -a --export E084DAB9 | sudo apt-key add - 
 
 
@@ -58,16 +63,20 @@ rm -r install-tl-*
 sudo aptitude -ry install r-base r-base-dev r-recommended
 
 # RStudio
-wget http://download1.rstudio.org/rstudio-0.94.110-i386.deb
-sudo gdebi -n rstudio-0.94.110-i386.deb
-rm rstudio-0.94.110-i386.deb
+wget http://www.rstudio.org/download/desktop
+rsversion=`grep -m 1 -o '[[:digit:]][.][[:digit:]][[:digit:]][.][[:digit:]][[:digit:]][[:digit:]]' desktop | head -n 1`
+rm desktop
+wget http://download1.rstudio.org/rstudio-$rsversion-i386.deb
+sudo gdebi -n rstudio-$rsversion-i386.deb
+rm rstudio-$rsversion-i386.deb
 
 # gedit plugins
 sudo aptitude -ry install gedit-developer-plugins gedit-plugins
   # watch out! the latex plugin installs LaTeX!!
   # We should install it beforehand
+  # It also installs Bazaar.
 
-# gedit-latex-plugin
+# gedit-latex-plugin ## TODO: fetch the latest version automatically
 # In ubuntu 11.10 repos there is a version that works only with gedit-2.x
 # but Oneiric ships gedit-3.x. Need to install from
 #https://launchpad.net/ubuntu/oneiric/i386/gedit-latex-plugin/3.3.1-1~oneiric1
@@ -81,10 +90,9 @@ rm gedit-latex-plugin_3.3.1-1~oneiric1_all.deb
 # We need to install it from the website.
 wget http://sourceforge.net/projects/rgedit/files/latest/download?source=files -O tmp_rgedit.tar.gz
 #  # After installing the previous plugins this should be unnecessary
-mkdir -p .local/share/gedit/plugins/
-cd .local/share/gedit/plugins
-tar -xf ~/tmp_rgedit.tar.gz
-rm ~/tmp_rgedit.tar.gz
+mkdir -p ~/.local/share/gedit/plugins/
+tar -C ~/.local/share/gedit/plugins -xf tmp_rgedit.tar.gz
+rm tmp_rgedit.tar.gz
 
 # Activate interesting plugins:
 # - R integration (RCtrl)
