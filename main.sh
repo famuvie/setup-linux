@@ -3,15 +3,12 @@
 ubuntu_codename=`lsb_release -sc`
 
 # Mint and Ubuntu correspondence
-if [ $ubuntu_codename=='lisa' ]; then ubuntu_codename='oneiric'; fi
+if [ `lsb_release -sc`=='lisa' ]; 
+    then 
+        mint=true;
+        ubuntu_codename='oneiric'; 
+fi
 
-### Install basic tools ###
-
-sudo apt-get install aptitude guake skype
-
-## TODO: 
-## Configure guake to be run at the begining of the session and get the transparency right
-## alias ll = ls -l for Mint
 
 ### Set up repositories ###
 
@@ -34,12 +31,15 @@ gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9 gpg -a --export E084D
 
 
 # Update repository information
-sudo aptitude update
+sudo apt-get update
 
 
 
 
 ### Install software ###
+
+# Basic tools
+sudo apt-get install aptitude guake skype
 
 # TeXLive (latest)
 # Full install with default options except:
@@ -50,7 +50,7 @@ wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
 tar -xf install-tl-unx.tar.gz
 rm install-tl-unx.tar.gz
 cd install-tl-*
-sudo aptitude -ry install perl-tk 
+#sudo aptitude -ry install perl-tk # only needed for a gui install
 sudo ./install-tl -profile ../texlive.tlpdb 
 tlversion=`grep -o 201. install-tl.log`
 sudo bash -c "echo -e 'export MANPATH=/usr/local/texlive/'$tlversion'/texmf/doc/man/:\$MANPATH\nexport INFOPATH=/usr/local/texlive/'$tlversion'/texmf/doc/info/:\$INFOPATH\nexport PATH=/usr/local/texlive/'$tlversion'/bin/i386-linux/:\$PATH' >> /etc/bash.bashrc"
@@ -77,6 +77,7 @@ sudo aptitude -ry install gedit-developer-plugins gedit-plugins
   # It also installs Bazaar.
 
 # gedit-latex-plugin ## TODO: fetch the latest version automatically
+# This is difficult due to the gnome-3 issue.
 # In ubuntu 11.10 repos there is a version that works only with gedit-2.x
 # but Oneiric ships gedit-3.x. Need to install from
 #https://launchpad.net/ubuntu/oneiric/i386/gedit-latex-plugin/3.3.1-1~oneiric1
@@ -129,6 +130,17 @@ sudo aptitude -ry install bzr-explorer bzr-svn
 # GDAL and Proj4
 sudo aptitude -ry install libgdal-dev libproj-dev
 
+
+
+### Settings and preferences ###
+
+## TODO: 
+## Configure guake to be run at the begining of the session and get the transparency right
+## alias ll = ls -l for Mint
+if [ $mint ];
+    then echo "alias ll='ls -Flh'\nalias la='ls -Flah'" >> ~/.bashrc;
+fi
+    
 
 
 
