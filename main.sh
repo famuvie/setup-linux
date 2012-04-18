@@ -39,7 +39,7 @@ sudo apt-get update
 ### Install software ###
 
 # Basic tools
-sudo apt-get install aptitude guake skype
+sudo apt-get install aptitude guake skype gnome-do
 
 # TeXLive (latest)
 # Full install with default options except:
@@ -141,6 +141,14 @@ if [ $mint ];
     then echo "alias ll='ls -Flh'\nalias la='ls -Flah'" >> ~/.bashrc;
 fi
     
+
+## Gnome-do
+
+# In Gnome 3.x change the following entry in the file
+# .gconf/apps/gnome-do/preferences/Do/Platform/Common/AbstractKeyBindingService/%gconf.xml
+#	<entry name="Summon_Do" mtime="1334737421" type="string">
+#		<stringvalue>&lt;Control&gt;&lt;Alt&gt;Return</stringvalue>
+#	</entry>
 
 
 
