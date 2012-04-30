@@ -41,6 +41,20 @@ sudo apt-get update
 # Basic tools
 sudo apt-get install aptitude guake skype gnome-do
 
+# Multimedia
+    # Flash, Java and MP3 support
+    sudo aptitude -ry install ubuntu-restricted-extras 
+    # Encripted DVD support
+    sudo aptitude -ry install libdvdread4 && sudo /usr/share/doc/libdvdread4/install-css.sh 
+    # medibuntu repos 
+    sudo wget --output-document=/etc/apt/sources.list.d/medibuntu.list http://www.medibuntu.org/sources.list.d/$ubuntu_codename.list
+    sudo apt-get --quiet update
+    sudo apt-get --yes --quiet --allow-unauthenticated install medibuntu-keyring 
+    sudo apt-get --quiet update
+
+    sudo apt-get install app-install-data-medibuntu apport-hooks-medibuntu
+    sudo apt-get install w32codecs libdvdcss2 non-free-codecs   # 32 bits
+
 # TeXLive (latest)
 # Full install with default options except:
 #  - only english and spanish documentation
