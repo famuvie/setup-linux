@@ -15,8 +15,10 @@ fi
 # Bazaar version control
 sudo add-apt-repository ppa:bzr/ppa
 
-# LibreOffice
-sudo add-apt-repository ppa:libreoffice/ppa
+# LibreOffice (unnecessary for Mint)
+if [ ! $mint ];
+  then sudo add-apt-repository ppa:libreoffice/ppa;
+fi
 
 # LaTeX ##
 # There is no PPA for texlive
@@ -27,8 +29,11 @@ sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
 
 # R-project
 sudo bash -c "echo 'deb http://cran.r-project.org/bin/linux/ubuntu' $ubuntu_codename'/' > /etc/apt/sources.list.d/cran-r-ppa-$ubuntu_codename.list"
-gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9 gpg -a --export E084DAB9 | sudo apt-key add - 
+# gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9 # (doesn't work?)
+gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E084DAB9  gpg -a --export E084DAB9 | sudo apt-key add - 
 
+# Gephi: Graph Viz interactive visualization
+sudo add-apt-repository ppa:rockclimb/gephi-daily
 
 # Update repository information
 sudo apt-get update
@@ -39,21 +44,28 @@ sudo apt-get update
 ### Install software ###
 
 # Basic tools
-sudo apt-get install aptitude guake skype gnome-do
+sudo apt-get install aptitude guake skype gnome-do unison unison-gtk gftp meld playonlinux virtualbox freemind pdftk umbrello recode
 
-# Multimedia
+# Calibre e-book manager (latest binary installation from webpage)
+sudo python -c "import sys; py3 = sys.version_info[0] > 2; u = __import__('urllib.request' if py3 else 'urllib', fromlist=1); exec(u.urlopen('http://status.calibre-ebook.com/linux_installer').read()); main()"
+
+
+# Multimedia (For Ubuntu)
+if [ ! $mint ];
+  then
     # Flash, Java and MP3 support
-    sudo aptitude -ry install ubuntu-restricted-extras 
+    sudo aptitude -ry install ubuntu-restricted-extras;
     # Encripted DVD support
-    sudo aptitude -ry install libdvdread4 && sudo /usr/share/doc/libdvdread4/install-css.sh 
+    sudo aptitude -ry install libdvdread4 && sudo /usr/share/doc/libdvdread4/install-css.sh;
     # medibuntu repos 
-    sudo wget --output-document=/etc/apt/sources.list.d/medibuntu.list http://www.medibuntu.org/sources.list.d/$ubuntu_codename.list
-    sudo apt-get --quiet update
-    sudo apt-get --yes --quiet --allow-unauthenticated install medibuntu-keyring 
-    sudo apt-get --quiet update
+    sudo wget --output-document=/etc/apt/sources.list.d/medibuntu.list http://www.medibuntu.org/sources.list.d/$ubuntu_codename.list;
+    sudo apt-get --quiet update;
+    sudo apt-get --yes --quiet --allow-unauthenticated install medibuntu-keyring;
+    sudo apt-get --quiet update;
 
-    sudo apt-get install app-install-data-medibuntu apport-hooks-medibuntu
-    sudo apt-get install w32codecs libdvdcss2 non-free-codecs   # 32 bits
+    sudo apt-get install app-install-data-medibuntu apport-hooks-medibuntu;
+    sudo apt-get install w32codecs libdvdcss2 non-free-codecs;   # 32 bits
+fi
 
 # TeXLive (latest)
 # Full install with default options except:
@@ -66,7 +78,7 @@ rm install-tl-unx.tar.gz
 cd install-tl-*
 #sudo aptitude -ry install perl-tk # only needed for a gui install
 sudo ./install-tl -profile ../texlive.tlpdb 
-tlversion=`grep -o 201. install-tl.log`
+tlversion=`grep -o 201. release-texlive.txt`
 sudo bash -c "echo -e 'export MANPATH=/usr/local/texlive/'$tlversion'/texmf/doc/man/:\$MANPATH\nexport INFOPATH=/usr/local/texlive/'$tlversion'/texmf/doc/info/:\$INFOPATH\nexport PATH=/usr/local/texlive/'$tlversion'/bin/i386-linux/:\$PATH' >> /etc/bash.bashrc"
 cd ..
 rm -r install-tl-*
@@ -87,7 +99,7 @@ rm rstudio-$rsversion-i386.deb
 # gedit plugins
 sudo aptitude -ry install gedit-developer-plugins gedit-plugins
   # watch out! the latex plugin installs LaTeX!!
-  # We should install it beforehand
+  # We should install it beforehand (it does it anyway)
   # It also installs Bazaar.
 
 # gedit-latex-plugin ## TODO: fetch the latest version automatically
@@ -104,7 +116,7 @@ rm gedit-latex-plugin_3.3.1-1~oneiric1_all.deb
 # that don't work well, because 11.10 works with Gtk3.
 # We need to install it from the website.
 wget http://sourceforge.net/projects/rgedit/files/latest/download?source=files -O tmp_rgedit.tar.gz
-#  # After installing the previous plugins this should be unnecessary
+#  # After installing the previous plugins this should be unnecessary (It is)
 mkdir -p ~/.local/share/gedit/plugins/
 tar -C ~/.local/share/gedit/plugins -xf tmp_rgedit.tar.gz
 rm tmp_rgedit.tar.gz
@@ -141,7 +153,7 @@ gsettings set org.gnome.gedit.preferences.editor auto-indent true
 # Bazaar 
 sudo aptitude -ry install bzr-explorer bzr-svn
 
-# GDAL and Proj4
+# Geographical libraries GDAL and Proj4
 sudo aptitude -ry install libgdal-dev libproj-dev
 
 
@@ -152,13 +164,13 @@ sudo aptitude -ry install libgdal-dev libproj-dev
 ## Configure guake to be run at the begining of the session and get the transparency right
 ## alias ll = ls -l for Mint
 if [ $mint ];
-    then echo "alias ll='ls -Flh'\nalias la='ls -Flah'" >> ~/.bashrc;
+    then echo -e "alias ll='ls -Flh'\nalias la='ls -Flah'" >> ~/.bashrc;
 fi
     
 
 ## Gnome-do
 
-# In Gnome 3.x change the following entry in the file
+# TODO: In Gnome 3.x change the following entry in the file
 # .gconf/apps/gnome-do/preferences/Do/Platform/Common/AbstractKeyBindingService/%gconf.xml
 #	<entry name="Summon_Do" mtime="1334737421" type="string">
 #		<stringvalue>&lt;Control&gt;&lt;Alt&gt;Return</stringvalue>
