@@ -35,16 +35,19 @@ gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E084DAB9  gpg -a --e
 # Gephi: Graph Viz interactive visualization
 sudo add-apt-repository ppa:rockclimb/gephi-daily
 
+# Insync: Google Drive client for linux
+wget -O - https://d2t3ff60b2tol4.cloudfront.net/services@insynchq.com.gpg.key | sudo apt-key add -
+sudo bash -c "echo 'deb http://apt.insynchq.com/ubuntu' $ubuntu_codename' non-free' > /etc/apt/sources.list.d/insync-ppa-$ubuntu_codename.list"
+
 # Update repository information
 sudo apt-get update
-
 
 
 
 ### Install software ###
 
 # Basic tools
-sudo apt-get install aptitude guake skype gnome-do unison unison-gtk gftp meld playonlinux virtualbox freemind pdftk umbrello recode
+sudo apt-get install aptitude guake skype gnome-do unison unison-gtk gftp meld playonlinux virtualbox freemind pdftk umbrello recode kompozer sshfs
 
 # Calibre e-book manager (latest binary installation from webpage)
 sudo python -c "import sys; py3 = sys.version_info[0] > 2; u = __import__('urllib.request' if py3 else 'urllib', fromlist=1); exec(u.urlopen('http://status.calibre-ebook.com/linux_installer').read()); main()"
@@ -156,7 +159,10 @@ sudo aptitude -ry install bzr-explorer bzr-svn
 # Geographical libraries GDAL and Proj4
 sudo aptitude -ry install libgdal-dev libproj-dev
 
-
+# Insync: Google Drive client for linux
+sudo apt-get install insync-beta-ubuntu
+#sudo apt-get install insync-beta-gnome     # GNOME Shell
+#sudo apt-get install insync-beta-cinnamon  # Cinnamon
 
 ### Settings and preferences ###
 
