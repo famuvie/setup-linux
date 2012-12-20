@@ -25,7 +25,9 @@ if [ $mint ];
 fi
 
 
+###########################
 ### Set up repositories ###
+###########################
 
 # Bazaar version control
 sudo add-apt-repository ppa:bzr/ppa
@@ -62,11 +64,13 @@ sudo apt-get update
 
 
 
+########################
 ### Install software ###
+########################
 
 # Basic tools
 sudo apt-get install aptitude 
-sudo aptitude -ry install guake skype gnome-do unison unison-gtk gftp meld playonlinux virtualbox freemind pdftk umbrello recode sshfs
+sudo aptitude -ry install guake skype gnome-do unison unison-gtk gftp meld playonlinux virtualbox freemind pdftk umbrello recode sshfs gtg okular
 
 # Calibre e-book manager (latest binary installation from webpage)
 sudo python -c "import sys; py3 = sys.version_info[0] > 2; u = __import__('urllib.request' if py3 else 'urllib', fromlist=1); exec(u.urlopen('http://status.calibre-ebook.com/linux_installer').read()); main()"
@@ -200,16 +204,19 @@ wget https://launchpad.net/gephi/0.8/0.8.1beta/+download/gephi-0.8.1-beta.tar.gz
 tar -C ~/bin -xf gephi-0.8.1-beta.tar.gz
 rm gephi-0.8.1-beta.tar.gz
 
-# TODO: Seguir desde aquí!!!
 
-# Kompozer: web authoring   # Cómo instalo esto?
+# Kompozer: web authoring  
 # TODO: infer automatically the latest release
 #wget http://sourceforge.net/projects/kompozer/files/current/0.8b3/linux-i686/kompozer-0.8b3.es-ES.gcc4.2-i686.tar.gz/download
 wget http://archive.ubuntu.com/ubuntu/pool/universe/k/kompozer/kompozer_0.8~b3.dfsg.1-0.1ubuntu2_i386.deb http://archive.ubuntu.com/ubuntu/pool/universe/k/kompozer/kompozer-data_0.8~b3.dfsg.1-0.1ubuntu2_all.deb
 sudo dpkg -i kompozer*.deb
 rm kompozer*.deb
 
+
+################################
 ### Settings and preferences ###
+################################
+
 
 ## TODO: 
 ## Configure guake to be run at the begining of the session and get the transparency right
