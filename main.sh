@@ -1,12 +1,27 @@
 #!/bin/bash
 
-ubuntu_codename=`lsb_release -sc`
+# Code name of Mint/Ubuntu
+codename=`lsb_release -sc`
 
-# Mint and Ubuntu correspondence
-if [ `lsb_release -sc`=='lisa' ]; 
+# Whether this is Mint or Ubuntu
+if [ `lsb_release -si`=='LinuxMint' ]; 
     then 
         mint=true;
-        ubuntu_codename='oneiric'; 
+fi
+
+# Mint and Ubuntu correspondence
+if [ $mint ]; 
+    then 
+	case $codename in
+		lisa )					# Mint 12
+			ubuntu_codename='oneiric';;	# Ubuntu 11.10
+		maya )					# Mint 13
+			ubuntu_codename='precise';;	# Ubuntu 12.04
+		nadia )					# Mint 14
+			ubuntu_codename='quantal';;	# Ubuntu 12.10
+		xxx )					# Mint 15
+			ubuntu_codename='raring';;	# Ubuntu 13.04
+	esac
 fi
 
 
@@ -32,8 +47,11 @@ sudo bash -c "echo 'deb http://cran.r-project.org/bin/linux/ubuntu' $ubuntu_code
 # gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9 # (doesn't work?)
 gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E084DAB9  gpg -a --export E084DAB9 | sudo apt-key add - 
 
-# Gephi: Graph Viz interactive visualization
-sudo add-apt-repository ppa:rockclimb/gephi-daily
+
+## Gephi: Graph Viz interactive visualization
+## I don't want a daily build! 
+## Install the latest stable release in the next section
+#sudo add-apt-repository ppa:rockclimb/gephi-daily
 
 # Insync: Google Drive client for linux
 wget -O - https://d2t3ff60b2tol4.cloudfront.net/services@insynchq.com.gpg.key | sudo apt-key add -
@@ -47,7 +65,8 @@ sudo apt-get update
 ### Install software ###
 
 # Basic tools
-sudo apt-get install aptitude guake skype gnome-do unison unison-gtk gftp meld playonlinux virtualbox freemind pdftk umbrello recode kompozer sshfs
+sudo apt-get install aptitude 
+sudo aptitude -ry install guake skype gnome-do unison unison-gtk gftp meld playonlinux virtualbox freemind pdftk umbrello recode sshfs
 
 # Calibre e-book manager (latest binary installation from webpage)
 sudo python -c "import sys; py3 = sys.version_info[0] > 2; u = __import__('urllib.request' if py3 else 'urllib', fromlist=1); exec(u.urlopen('http://status.calibre-ebook.com/linux_installer').read()); main()"
@@ -61,7 +80,7 @@ if [ ! $mint ];
     # Encripted DVD support
     sudo aptitude -ry install libdvdread4 && sudo /usr/share/doc/libdvdread4/install-css.sh;
     # medibuntu repos 
-    sudo wget --output-document=/etc/apt/sources.list.d/medibuntu.list http://www.medibuntu.org/sources.list.d/$ubuntu_codename.list;
+    sudo wget --output-document=/etc/apt/sources.list.d/medibuntu.list http://www.medibuntu.org/sources.list.d/$codename.list;
     sudo apt-get --quiet update;
     sudo apt-get --yes --quiet --allow-unauthenticated install medibuntu-keyring;
     sudo apt-get --quiet update;
@@ -91,7 +110,7 @@ rm -r install-tl-*
 # Core R, recommended and development packages (for compilation of sources)
 sudo aptitude -ry install r-base r-base-dev r-recommended
 
-# RStudio
+# RStudio (latest version)
 wget http://www.rstudio.org/download/desktop
 rsversion=`grep -m 1 -o '[[:digit:]][.][[:digit:]][[:digit:]][.][[:digit:]][[:digit:]][[:digit:]]' desktop | head -n 1`
 rm desktop
@@ -104,15 +123,24 @@ sudo aptitude -ry install gedit-developer-plugins gedit-plugins
   # watch out! the latex plugin installs LaTeX!!
   # We should install it beforehand (it does it anyway)
   # It also installs Bazaar.
+  # gedit-developer-plugins requires gedit >= 3.2.0 
+  # installing from source gave problems with libgedit.private.so.0 library not found
+  # Do not auto-accept the first solution, which is not installing developer plugins
+  # and take the second option, which is upgrading gedit
+  sudo aptitude install gedit-developer-plugins
 
 # gedit-latex-plugin ## TODO: fetch the latest version automatically
 # This is difficult due to the gnome-3 issue.
 # In ubuntu 11.10 repos there is a version that works only with gedit-2.x
 # but Oneiric ships gedit-3.x. Need to install from
 #https://launchpad.net/ubuntu/oneiric/i386/gedit-latex-plugin/3.3.1-1~oneiric1
-wget http://launchpadlibrarian.net/83566981/gedit-latex-plugin_3.3.1-1~oneiric1_all.deb
-sudo gdebi -n gedit-latex-plugin_3.3.1-1~oneiric1_all.deb
-rm gedit-latex-plugin_3.3.1-1~oneiric1_all.deb
+#wget http://launchpadlibrarian.net/83566981/gedit-latex-plugin_3.3.1-1~oneiric1_all.deb
+#sudo gdebi -n gedit-latex-plugin_3.3.1-1~oneiric1_all.deb
+#rm gedit-latex-plugin_3.3.1-1~oneiric1_all.deb
+# I think this is solved now
+sudo aptitude -ry install gedit-latex-plugin
+# Agghh!!! This reinstalls LaTeX!!!
+
 
 # gedit-r-plugin
 # in ubuntu 11.10 repositories there is a Gtk2 outdated version
@@ -160,14 +188,32 @@ sudo aptitude -ry install bzr-explorer bzr-svn
 sudo aptitude -ry install libgdal-dev libproj-dev
 
 # Insync: Google Drive client for linux
-sudo apt-get install insync-beta-ubuntu
+#sudo apt-get install insync-beta-ubuntu
 #sudo apt-get install insync-beta-gnome     # GNOME Shell
-#sudo apt-get install insync-beta-cinnamon  # Cinnamon
+sudo aptitude -ry install insync-beta-cinnamon  # Cinnamon
+
+
+# Gephi: Graph Viz interactive visualization
+# This is the latest release up to date.
+# TODO: infer automatically the latest release
+wget https://launchpad.net/gephi/0.8/0.8.1beta/+download/gephi-0.8.1-beta.tar.gz
+tar -C ~/bin -xf gephi-0.8.1-beta.tar.gz
+rm gephi-0.8.1-beta.tar.gz
+
+# TODO: Seguir desde aquí!!!
+
+# Kompozer: web authoring   # Cómo instalo esto?
+# TODO: infer automatically the latest release
+#wget http://sourceforge.net/projects/kompozer/files/current/0.8b3/linux-i686/kompozer-0.8b3.es-ES.gcc4.2-i686.tar.gz/download
+wget http://archive.ubuntu.com/ubuntu/pool/universe/k/kompozer/kompozer_0.8~b3.dfsg.1-0.1ubuntu2_i386.deb http://archive.ubuntu.com/ubuntu/pool/universe/k/kompozer/kompozer-data_0.8~b3.dfsg.1-0.1ubuntu2_all.deb
+sudo dpkg -i kompozer*.deb
+rm kompozer*.deb
 
 ### Settings and preferences ###
 
 ## TODO: 
 ## Configure guake to be run at the begining of the session and get the transparency right
+
 ## alias ll = ls -l for Mint
 if [ $mint ];
     then echo -e "alias ll='ls -Flh'\nalias la='ls -Flah'" >> ~/.bashrc;
