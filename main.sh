@@ -19,7 +19,7 @@ if [ $mint ];
 			ubuntu_codename='precise';;	# Ubuntu 12.04
 		nadia )					# Mint 14
 			ubuntu_codename='quantal';;	# Ubuntu 12.10
-		xxx )					# Mint 15
+		olivia )				# Mint 15
 			ubuntu_codename='raring';;	# Ubuntu 13.04
 	esac
 fi
@@ -30,7 +30,9 @@ fi
 ###########################
 
 # Bazaar version control
-sudo add-apt-repository ppa:bzr/ppa
+# This developer ppa isn't necessary
+# Get Bazaar from ubuntu repos
+# sudo add-apt-repository ppa:bzr/ppa
 
 # LibreOffice (unnecessary for Mint)
 if [ ! $mint ];
@@ -47,7 +49,7 @@ sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
 # R-project
 sudo bash -c "echo 'deb http://cran.r-project.org/bin/linux/ubuntu' $ubuntu_codename'/' > /etc/apt/sources.list.d/cran-r-ppa-$ubuntu_codename.list"
 # gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9 # (doesn't work?)
-gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E084DAB9  gpg -a --export E084DAB9 | sudo apt-key add - 
+gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E084DAB9 gpg -a --export E084DAB9 | sudo apt-key add -
 
 
 ## Gephi: Graph Viz interactive visualization
@@ -57,7 +59,7 @@ gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E084DAB9  gpg -a --e
 
 # Insync: Google Drive client for linux
 wget -O - https://d2t3ff60b2tol4.cloudfront.net/services@insynchq.com.gpg.key | sudo apt-key add -
-sudo bash -c "echo 'deb http://apt.insynchq.com/ubuntu' $ubuntu_codename' non-free' > /etc/apt/sources.list.d/insync-ppa-$ubuntu_codename.list"
+sudo bash -c "echo 'deb http://apt.insynchq.com/mint' $codename' non-free contrib' > /etc/apt/sources.list.d/insync-ppa-$codename.list"
 
 # Update repository information
 sudo apt-get update
@@ -70,7 +72,7 @@ sudo apt-get update
 
 # Basic tools
 sudo apt-get install aptitude 
-sudo aptitude -ry install guake skype gnome-do unison unison-gtk gftp meld playonlinux virtualbox freemind pdftk umbrello recode sshfs gtg okular
+sudo aptitude -ry install guake skype gnome-do unison unison-gtk gftp meld playonlinux virtualbox freemind pdftk umbrello recode sshfs gtg okular audacity pdfshuffler
 
 # Calibre e-book manager (latest binary installation from webpage)
 sudo python -c "import sys; py3 = sys.version_info[0] > 2; u = __import__('urllib.request' if py3 else 'urllib', fromlist=1); exec(u.urlopen('http://status.calibre-ebook.com/linux_installer').read()); main()"
@@ -97,7 +99,7 @@ fi
 # Full install with default options except:
 #  - only english and spanish documentation
 #  - make symbolic links in system directories
-# It takes a while
+# It takes a while (some 40 minutes)
 wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
 tar -xf install-tl-unx.tar.gz
 rm install-tl-unx.tar.gz
@@ -105,9 +107,12 @@ cd install-tl-*
 #sudo aptitude -ry install perl-tk # only needed for a gui install
 sudo ./install-tl -profile ../texlive.tlpdb 
 tlversion=`grep -o 201. release-texlive.txt`
-sudo bash -c "echo -e 'export MANPATH=/usr/local/texlive/'$tlversion'/texmf/doc/man/:\$MANPATH\nexport INFOPATH=/usr/local/texlive/'$tlversion'/texmf/doc/info/:\$INFOPATH\nexport PATH=/usr/local/texlive/'$tlversion'/bin/i386-linux/:\$PATH' >> /etc/bash.bashrc"
+sudo bash -c "echo -e '\n# LaTeX\nexport MANPATH=/usr/local/texlive/'$tlversion'/texmf/doc/man/:\$MANPATH\nexport INFOPATH=/usr/local/texlive/'$tlversion'/texmf/doc/info/:\$INFOPATH\nexport PATH=/usr/local/texlive/'$tlversion'/bin/i386-linux/:\$PATH' >> /etc/bash.bashrc"
 cd ..
 rm -r install-tl-*
+# Still needed from repos:
+sudo aptitude install -ry tex-common texinfo lmodern perl-tk
+
 # Command for further updating in the future
 # sudo tlmgr update --all
 
@@ -122,8 +127,10 @@ wget http://download1.rstudio.org/rstudio-$rsversion-i386.deb
 sudo gdebi -n rstudio-$rsversion-i386.deb
 rm rstudio-$rsversion-i386.deb
 
+# Eclipse IDE (?)
+
 # gedit plugins
-sudo aptitude -ry install gedit-developer-plugins gedit-plugins
+# sudo aptitude -ry install gedit-developer-plugins gedit-plugins
   # watch out! the latex plugin installs LaTeX!!
   # We should install it beforehand (it does it anyway)
   # It also installs Bazaar.
@@ -133,28 +140,40 @@ sudo aptitude -ry install gedit-developer-plugins gedit-plugins
   # and take the second option, which is upgrading gedit
   sudo aptitude install gedit-developer-plugins
 
-# gedit-latex-plugin ## TODO: fetch the latest version automatically
-# This is difficult due to the gnome-3 issue.
+# gedit-latex-plugin 
 # In ubuntu 11.10 repos there is a version that works only with gedit-2.x
 # but Oneiric ships gedit-3.x. Need to install from
 #https://launchpad.net/ubuntu/oneiric/i386/gedit-latex-plugin/3.3.1-1~oneiric1
 #wget http://launchpadlibrarian.net/83566981/gedit-latex-plugin_3.3.1-1~oneiric1_all.deb
 #sudo gdebi -n gedit-latex-plugin_3.3.1-1~oneiric1_all.deb
 #rm gedit-latex-plugin_3.3.1-1~oneiric1_all.deb
-# I think this is solved now
-sudo aptitude -ry install gedit-latex-plugin
-# Agghh!!! This reinstalls LaTeX!!!
+# This is solved now
 
+# This plugin depends on rubber who in turn depends on texlive
+# It doesn't know that I have already installed TeX Live and 
+# wants to install the outdated version from de repos.
+# Solution is to build a dummy package to cheat him
+# Source: http://blogs.ethz.ch/ubuntu/2011/03/14/tex-live-2010-installation/
+sudo apt-get install equivs
+mkdir tl-equivs && cp texlive-local tl-equivs && cd tl-equivs
+equivs-build texlive-local
+sudo dpkg -i texlive-local_2013-1~1_all.deb
+cd .. && rm -r tl-equivs
+# Finally:
+sudo aptitude install gedit-latex-plugin
 
 # gedit-r-plugin
 # in ubuntu 11.10 repositories there is a Gtk2 outdated version
 # that don't work well, because 11.10 works with Gtk3.
 # We need to install it from the website.
-wget http://sourceforge.net/projects/rgedit/files/latest/download?source=files -O tmp_rgedit.tar.gz
+# wget http://sourceforge.net/projects/rgedit/files/latest/download?source=files -O tmp_rgedit.tar.gz
 #  # After installing the previous plugins this should be unnecessary (It is)
-mkdir -p ~/.local/share/gedit/plugins/
-tar -C ~/.local/share/gedit/plugins -xf tmp_rgedit.tar.gz
-rm tmp_rgedit.tar.gz
+# mkdir -p ~/.local/share/gedit/plugins/
+# tar -C ~/.local/share/gedit/plugins -xf tmp_rgedit.tar.gz
+# rm tmp_rgedit.tar.gz
+# All this is solved now 
+# (although the repos don't necessarily have the very latest version)
+sudo aptitude -ry install gedit-r-plugin
 
 # Activate interesting plugins:
 # - R integration (RCtrl)
@@ -178,10 +197,10 @@ gsettings set org.gnome.gedit.plugins active-plugins "['latex', 'changecase', 'f
 
 # gedit preferences
     # ancho del tabulador: 4
-    # usar espacios en lugar de tabuladores
+    # usar espacios en lugar de tabuladores (seguro?)
     # activar sangría automática
 gsettings set org.gnome.gedit.preferences.editor tabs-size 4
-gsettings set org.gnome.gedit.preferences.editor insert-spaces true
+# gsettings set org.gnome.gedit.preferences.editor insert-spaces true
 gsettings set org.gnome.gedit.preferences.editor auto-indent true
 
 
@@ -199,19 +218,32 @@ sudo aptitude -ry install insync-beta-cinnamon  # Cinnamon
 
 # Gephi: Graph Viz interactive visualization
 # This is the latest release up to date.
-# TODO: infer automatically the latest release
-wget https://launchpad.net/gephi/0.8/0.8.1beta/+download/gephi-0.8.1-beta.tar.gz
-tar -C ~/bin -xf gephi-0.8.1-beta.tar.gz
-rm gephi-0.8.1-beta.tar.gz
+wget https://launchpad.net/gephi
+gephifile=`grep -m 1 -o http.*tar.gz gephi`
+rm gephi
+wget $gephifile
+tar -C ~/bin -xf gephi-*
+rm gephi-*
+# TODO: put shortcut in Gnome menus
 
 
 # Kompozer: web authoring  
 # TODO: infer automatically the latest release
+wget kompozer.net
+grep -o http.*download index.html
 #wget http://sourceforge.net/projects/kompozer/files/current/0.8b3/linux-i686/kompozer-0.8b3.es-ES.gcc4.2-i686.tar.gz/download
 wget http://archive.ubuntu.com/ubuntu/pool/universe/k/kompozer/kompozer_0.8~b3.dfsg.1-0.1ubuntu2_i386.deb http://archive.ubuntu.com/ubuntu/pool/universe/k/kompozer/kompozer-data_0.8~b3.dfsg.1-0.1ubuntu2_all.deb
 sudo dpkg -i kompozer*.deb
 rm kompozer*.deb
 
+# Dropbox
+# Latest version
+wget https://www.dropbox.com/install2
+dbsufix=`grep -o /download?dl=packages/ubuntu/dropbox[_\.0-9]*i386.deb install2`
+wget https://www.dropbox.com$dbsufix
+rm install2
+sudo dpkg -i download*
+rm download*
 
 ################################
 ### Settings and preferences ###
@@ -229,19 +261,20 @@ fi
 
 ## Gnome-do
 
-# TODO: In Gnome 3.x change the following entry in the file
+# In Gnome 3.x change the following entry in the file
 # .gconf/apps/gnome-do/preferences/Do/Platform/Common/AbstractKeyBindingService/%gconf.xml
 #	<entry name="Summon_Do" mtime="1334737421" type="string">
 #		<stringvalue>&lt;Control&gt;&lt;Alt&gt;Return</stringvalue>
 #	</entry>
+# Unnecessary now
 
 
 
 ### Bug corrections and workarounds ###
 
-# rubber and epstopdf
-# http://forums.linuxmint.com/viewtopic.php?f=47&t=49701
-sudo cp /usr/share/rubber/rules.ini /usr/share/rubber/rules.ini.bak
-sudo bash -c 'sed "s/= epstopdf/= bash epstopdf/" /usr/share/rubber/rules.ini.bak > /usr/share/rubber/rules.ini'
-
+#	# rubber and epstopdf
+#	# http://forums.linuxmint.com/viewtopic.php?f=47&t=49701
+#	sudo cp /usr/share/rubber/rules.ini /usr/share/rubber/rules.ini.bak
+#	sudo bash -c 'sed "s/= epstopdf/= bash epstopdf/" /usr/share/rubber/rules.ini.bak > /usr/share/rubber/rules.ini'
+#	Seems solved now
 
