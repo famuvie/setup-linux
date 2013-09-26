@@ -4,14 +4,14 @@
 codename=`lsb_release -sc`
 
 # Whether this is Mint or Ubuntu
-if [ `lsb_release -si`=='LinuxMint' ]; 
-    then 
+if [ `lsb_release -si`=='LinuxMint' ];
+    then
         mint=true;
 fi
 
 # Mint and Ubuntu correspondence
-if [ $mint ]; 
-    then 
+if [ $mint ];
+    then
 	case $codename in
 		lisa )					# Mint 12
 			ubuntu_codename='oneiric';;	# Ubuntu 11.10
@@ -53,7 +53,7 @@ gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E084DAB9 gpg -a --ex
 
 
 ## Gephi: Graph Viz interactive visualization
-## I don't want a daily build! 
+## I don't want a daily build!
 ## Install the latest stable release in the next section
 #sudo add-apt-repository ppa:rockclimb/gephi-daily
 
@@ -71,8 +71,8 @@ sudo apt-get update
 ########################
 
 # Basic tools
-sudo apt-get install aptitude 
-sudo aptitude -ry install guake skype gnome-do unison unison-gtk gftp meld playonlinux virtualbox freemind pdftk umbrello recode sshfs gtg okular audacity pdfshuffler
+sudo apt-get install aptitude
+sudo aptitude -ry install guake skype gnome-do unison unison-gtk gftp meld playonlinux virtualbox freemind pdftk umbrello recode ssh sshfs gtg okular audacity pdfshuffler
 
 # Calibre e-book manager (latest binary installation from webpage)
 sudo python -c "import sys; py3 = sys.version_info[0] > 2; u = __import__('urllib.request' if py3 else 'urllib', fromlist=1); exec(u.urlopen('http://status.calibre-ebook.com/linux_installer').read()); main()"
@@ -85,7 +85,7 @@ if [ ! $mint ];
     sudo aptitude -ry install ubuntu-restricted-extras;
     # Encripted DVD support
     sudo aptitude -ry install libdvdread4 && sudo /usr/share/doc/libdvdread4/install-css.sh;
-    # medibuntu repos 
+    # medibuntu repos
     sudo wget --output-document=/etc/apt/sources.list.d/medibuntu.list http://www.medibuntu.org/sources.list.d/$codename.list;
     sudo apt-get --quiet update;
     sudo apt-get --yes --quiet --allow-unauthenticated install medibuntu-keyring;
@@ -105,7 +105,7 @@ tar -xf install-tl-unx.tar.gz
 rm install-tl-unx.tar.gz
 cd install-tl-*
 #sudo aptitude -ry install perl-tk # only needed for a gui install
-sudo ./install-tl -profile ../texlive.tlpdb 
+sudo ./install-tl -profile ../texlive.tlpdb
 tlversion=`grep -o 201. release-texlive.txt`
 sudo bash -c "echo -e '\n# LaTeX\nexport MANPATH=/usr/local/texlive/'$tlversion'/texmf/doc/man/:\$MANPATH\nexport INFOPATH=/usr/local/texlive/'$tlversion'/texmf/doc/info/:\$INFOPATH\nexport PATH=/usr/local/texlive/'$tlversion'/bin/i386-linux/:\$PATH' >> /etc/bash.bashrc"
 cd ..
@@ -127,20 +127,40 @@ wget http://download1.rstudio.org/rstudio-$rsversion-i386.deb
 sudo gdebi -n rstudio-$rsversion-i386.deb
 rm rstudio-$rsversion-i386.deb
 
-# Eclipse IDE (?)
+# Eclipse IDE + StatET
+# Download the CDT version of Eclipse (with tools for C/C++)
+wget http://www.eclipse.org/downloads/
+eclipsemirror=`grep -m 1 -o www.*.cpp*tar.gz index.html`
+wget $eclipsemirror'&mirror_id=514'
+wget `grep -m 1 -o 'http.*tar.gz' download*`
+mv eclipse* ~/bin
+tar -xf ~/bin/eclipse*
+mv ~/bin/eclipse ~/bin/Eclipse
+ln -s ~/bin/Eclipse/eclipse ~/bin/eclipse
+# Until 2012 Eclipse needed the java 6 version from Sun
+# sudo aptitude -ry install sun-java6-jre sun-java6-jdk
+# From 2013, Sun java if Oracle's java with a more restricted license
+# so it can't be installed from repos. However, Eclipse seems too
+# work fine with Open Java 7, now.
+sudo aptitude -ry install default-jdk
+# StatET
+# Install manually from within Eclipse:
+# http://www.walware.de/goto/statet
+
+
 
 # gedit plugins
 # sudo aptitude -ry install gedit-developer-plugins gedit-plugins
   # watch out! the latex plugin installs LaTeX!!
   # We should install it beforehand (it does it anyway)
   # It also installs Bazaar.
-  # gedit-developer-plugins requires gedit >= 3.2.0 
+  # gedit-developer-plugins requires gedit >= 3.2.0
   # installing from source gave problems with libgedit.private.so.0 library not found
   # Do not auto-accept the first solution, which is not installing developer plugins
   # and take the second option, which is upgrading gedit
   sudo aptitude install gedit-developer-plugins
 
-# gedit-latex-plugin 
+# gedit-latex-plugin
 # In ubuntu 11.10 repos there is a version that works only with gedit-2.x
 # but Oneiric ships gedit-3.x. Need to install from
 #https://launchpad.net/ubuntu/oneiric/i386/gedit-latex-plugin/3.3.1-1~oneiric1
@@ -150,7 +170,7 @@ rm rstudio-$rsversion-i386.deb
 # This is solved now
 
 # This plugin depends on rubber who in turn depends on texlive
-# It doesn't know that I have already installed TeX Live and 
+# It doesn't know that I have already installed TeX Live and
 # wants to install the outdated version from de repos.
 # Solution is to build a dummy package to cheat him
 # Source: http://blogs.ethz.ch/ubuntu/2011/03/14/tex-live-2010-installation/
@@ -171,7 +191,7 @@ sudo aptitude install gedit-latex-plugin
 # mkdir -p ~/.local/share/gedit/plugins/
 # tar -C ~/.local/share/gedit/plugins -xf tmp_rgedit.tar.gz
 # rm tmp_rgedit.tar.gz
-# All this is solved now 
+# All this is solved now
 # (although the repos don't necessarily have the very latest version)
 sudo aptitude -ry install gedit-r-plugin
 
@@ -189,22 +209,22 @@ sudo aptitude -ry install gedit-r-plugin
 
 # In Gnome 2.x I do it automatically editting
 # .gconf/apps/gedit-2/plugins/%gconf.xml
-# and using gconftool-2 as a CLI 
+# and using gconftool-2 as a CLI
 #gconftool-2 --set /apps/gedit-2/plugins/active-plugins [latex,changecase,filebrowser,docinfo,wordcompletion,time,terminal,externaltools,multiedit,modelines,bracketcompletion,synctex,codecomment,spell,textsize,RCtrl] --type=list --list-type=string
 
 # In Gnome 3.x the CLI is gsettings:
 gsettings set org.gnome.gedit.plugins active-plugins "['latex', 'changecase', 'filebrowser', 'docinfo', 'wordcompletion', 'time', 'terminal', 'externaltools', 'multiedit', 'modelines', 'bracketcompletion', 'synctex', 'codecomment', 'spell', 'textsize', 'RCtrl']"
 
 # gedit preferences
-    # ancho del tabulador: 4
+    # ancho del tabulador: 2
     # usar espacios en lugar de tabuladores (seguro?)
     # activar sangría automática
-gsettings set org.gnome.gedit.preferences.editor tabs-size 4
-# gsettings set org.gnome.gedit.preferences.editor insert-spaces true
+gsettings set org.gnome.gedit.preferences.editor tabs-size 2
+gsettings set org.gnome.gedit.preferences.editor insert-spaces true
 gsettings set org.gnome.gedit.preferences.editor auto-indent true
 
 
-# Bazaar 
+# Bazaar
 sudo aptitude -ry install bzr-explorer bzr-svn
 
 # Geographical libraries GDAL and Proj4
@@ -227,7 +247,7 @@ rm gephi-*
 # TODO: put shortcut in Gnome menus
 
 
-# Kompozer: web authoring  
+# Kompozer: web authoring
 # TODO: infer automatically the latest release
 wget kompozer.net
 grep -o http.*download index.html
@@ -245,19 +265,25 @@ rm install2
 sudo dpkg -i download*
 rm download*
 
+
+# Delicious (Firefox plugin)
+wget https://addons.mozilla.org/firefox/downloads/file/172674/delicious_bookmarks-2.3.4-fx.xpi
+firefox delicious_bookmarks-2.3.4-fx.xpi
+
+
 ################################
 ### Settings and preferences ###
 ################################
 
 
-## TODO: 
+## TODO:
 ## Configure guake to be run at the begining of the session and get the transparency right
 
 ## alias ll = ls -l for Mint
 if [ $mint ];
     then echo -e "alias ll='ls -Flh'\nalias la='ls -Flah'" >> ~/.bashrc;
 fi
-    
+
 
 ## Gnome-do
 
@@ -277,4 +303,3 @@ fi
 #	sudo cp /usr/share/rubber/rules.ini /usr/share/rubber/rules.ini.bak
 #	sudo bash -c 'sed "s/= epstopdf/= bash epstopdf/" /usr/share/rubber/rules.ini.bak > /usr/share/rubber/rules.ini'
 #	Seems solved now
-

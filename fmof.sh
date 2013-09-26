@@ -18,5 +18,7 @@ cp -r $bkploc/.kde/share/apps/okular/* .kde/share/apps/okular/
 # Calibre configuration
 cp -r $bkploc/.config/calibre ~/.config
 
+### eMail
+cp -r $bkploc/.thunderbird ~
 
 ### Software not installed in main.sh ###
