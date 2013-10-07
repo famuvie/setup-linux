@@ -57,9 +57,10 @@ gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E084DAB9 gpg -a --ex
 ## Install the latest stable release in the next section
 #sudo add-apt-repository ppa:rockclimb/gephi-daily
 
-# Insync: Google Drive client for linux
-wget -O - https://d2t3ff60b2tol4.cloudfront.net/services@insynchq.com.gpg.key | sudo apt-key add -
-sudo bash -c "echo 'deb http://apt.insynchq.com/mint' $codename' non-free contrib' > /etc/apt/sources.list.d/insync-ppa-$codename.list"
+## Insync: Google Drive client for linux
+## This is trial only. Bullshit.
+#wget -O - https://d2t3ff60b2tol4.cloudfront.net/services@insynchq.com.gpg.key | sudo apt-key add -
+#sudo bash -c "echo 'deb http://apt.insynchq.com/mint' $codename' non-free contrib' > /etc/apt/sources.list.d/insync-ppa-$codename.list"
 
 # Update repository information
 sudo apt-get update
@@ -107,7 +108,7 @@ cd install-tl-*
 #sudo aptitude -ry install perl-tk # only needed for a gui install
 sudo ./install-tl -profile ../texlive.tlpdb
 tlversion=`grep -o 201. release-texlive.txt`
-sudo bash -c "echo -e '\n# LaTeX\nexport MANPATH=/usr/local/texlive/'$tlversion'/texmf/doc/man/:\$MANPATH\nexport INFOPATH=/usr/local/texlive/'$tlversion'/texmf/doc/info/:\$INFOPATH\nexport PATH=/usr/local/texlive/'$tlversion'/bin/i386-linux/:\$PATH' >> /etc/bash.bashrc"
+sudo bash -c "echo -e '\n# LaTeX\nexport MANPATH=/usr/local/texlive/'$tlversion'/texmf/doc/man/:\$MANPATH\nexport INFOPATH=/usr/local/texlive/'$tlversion'/texmf/doc/info/:\$INFOPATH\nexport PATH=/usr/local/texlive/'$tlversion'/bin/i386-linux/:\$PATH' >> /etc/profile"
 cd ..
 rm -r install-tl-*
 # Still needed from repos:
@@ -128,6 +129,8 @@ sudo gdebi -n rstudio-$rsversion-i386.deb
 rm rstudio-$rsversion-i386.deb
 
 # Eclipse IDE + StatET
+# Follow instructions from 
+# http://www.stanford.edu/~messing/ComputationalSocialScienceWorkflow.html
 # Download the CDT version of Eclipse (with tools for C/C++)
 wget http://www.eclipse.org/downloads/
 eclipsemirror=`grep -m 1 -o www.*.cpp*tar.gz index.html`
@@ -146,7 +149,7 @@ sudo aptitude -ry install default-jdk
 # StatET
 # Install manually from within Eclipse:
 # http://www.walware.de/goto/statet
-
+sudo R CMD javareconf
 
 
 # gedit plugins
@@ -230,10 +233,10 @@ sudo aptitude -ry install bzr-explorer bzr-svn
 # Geographical libraries GDAL and Proj4
 sudo aptitude -ry install libgdal-dev libproj-dev
 
-# Insync: Google Drive client for linux
+# Insync: Google Drive client for linux (trial)
 #sudo apt-get install insync-beta-ubuntu
 #sudo apt-get install insync-beta-gnome     # GNOME Shell
-sudo aptitude -ry install insync-beta-cinnamon  # Cinnamon
+#sudo aptitude -ry install insync-beta-cinnamon  # Cinnamon
 
 
 # Gephi: Graph Viz interactive visualization
