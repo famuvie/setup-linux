@@ -73,7 +73,7 @@ sudo apt-get update
 
 # Basic tools
 sudo apt-get install aptitude
-sudo aptitude -ry install guake skype gnome-do unison unison-gtk gftp meld playonlinux virtualbox freemind pdftk umbrello recode ssh sshfs gtg okular audacity pdfshuffler
+sudo aptitude -ry install guake skype gnome-do unison unison-gtk gftp meld playonlinux virtualbox freemind pdftk umbrello recode ssh sshfs gtg okular audacity pdfshuffler pandoc xournal ispell xclip
 
 # Calibre e-book manager (latest binary installation from webpage)
 sudo python -c "import sys; py3 = sys.version_info[0] > 2; u = __import__('urllib.request' if py3 else 'urllib', fromlist=1); exec(u.urlopen('http://status.calibre-ebook.com/linux_installer').read()); main()"
@@ -272,6 +272,9 @@ rm download*
 # Delicious (Firefox plugin)
 wget https://addons.mozilla.org/firefox/downloads/file/172674/delicious_bookmarks-2.3.4-fx.xpi
 firefox delicious_bookmarks-2.3.4-fx.xpi
+
+# yEd graph editor
+#http://www.yworks.com/en/products_yed_download.html
 
 
 ################################
