@@ -1,10 +1,9 @@
-setup-linux
-===========
-
 Bash script for setting up my (Linux biostatistical) workstation from scratch
 
+Sets repositories up, installs packages and plugins, and configures several things. Mostly, statistical packages and plugins. I use it for configuring a work station from scratch, and leave it ready to use with all the tools and settings I need. 
 
-# How to use
+
+## How to use
 
 If you use MS Windows, don't.
 
@@ -20,7 +19,7 @@ You can also set executable permissions in order to run the script by double-cli
 It will ask for administration provileges, but don't run the entire script with *sudo*.
 
 
-# Details
+## Details
 
 main.sh is a shell script intended for setting up a statistical working environment in a Ubuntu/Mint machine.
 It configures some repositories, installs some software (in special, software related with R and LaTeX) and configures some settings.
