@@ -21,6 +21,10 @@ if [ $mint ];
 			ubuntu_codename='quantal';;	# Ubuntu 12.10
 		olivia )				# Mint 15
 			ubuntu_codename='raring';;	# Ubuntu 13.04
+		petra )					# Mint 16
+			ubuntu_codename='saucy';;	# Ubuntu 13.10
+		qiana )					# Mint 17
+			ubuntu_codename='trusty';;	# Ubuntu 14.04
 	esac
 fi
 
@@ -43,7 +47,7 @@ fi
 # There is no PPA for texlive
 
 # GIS software (Ubuntugis)
-# unstable, por el problema de GRASS con wxpython
+# unstable, because of a problem between GRASS and wxpython
 sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
 
 # R-project
@@ -73,7 +77,10 @@ sudo apt-get update
 
 # Basic tools
 sudo apt-get install aptitude
-sudo aptitude -ry install guake skype gnome-do unison unison-gtk gftp meld playonlinux virtualbox freemind pdftk umbrello recode ssh sshfs gtg okular audacity pdfshuffler pandoc xournal ispell xclip
+# Warning unattended installation of all these with aptitude broke my cinnamon installation (some incompatibility in dependencies)
+# However, it seems not to happen with apt-get, so it looks safer for the moment.
+# As an alternative, it might be useful to use aptitude-robot
+sudo apt-get -ry install guake skype gnome-do unison unison-gtk gftp meld playonlinux virtualbox freemind pdftk umbrello recode ssh sshfs gtg okular audacity pdfshuffler pandoc xournal ispell xclip
 
 # Calibre e-book manager (latest binary installation from webpage)
 sudo python -c "import sys; py3 = sys.version_info[0] > 2; u = __import__('urllib.request' if py3 else 'urllib', fromlist=1); exec(u.urlopen('http://status.calibre-ebook.com/linux_installer').read()); main()"
