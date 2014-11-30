@@ -3,6 +3,9 @@
 # Code name of Mint/Ubuntu
 codename=`lsb_release -sc`
 
+# System architecture
+arch=`lscpu | grep Architecture: | sed  's/Architecture\: *//g' -`
+
 # Whether this is Mint or Ubuntu
 if [ `lsb_release -si`=='LinuxMint' ];
     then
@@ -55,6 +58,10 @@ sudo bash -c "echo 'deb http://cran.r-project.org/bin/linux/ubuntu' $ubuntu_code
 # gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9 # (doesn't work?)
 gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E084DAB9 gpg -a --export E084DAB9 | sudo apt-key add -
 
+## Oracle (Sun) Java (JRE and JDK)
+## It's a Gephi (and a common) dependency
+sudo add-apt-repository ppa:webupd8team/java
+
 
 ## Gephi: Graph Viz interactive visualization
 ## I don't want a daily build!
@@ -75,12 +82,18 @@ sudo apt-get update
 ### Install software ###
 ########################
 
-# Basic tools
-sudo apt-get install aptitude
+## Basic tools
+if [ ! $mint ];
+	sudo apt-get install aptitude
+fi
+
 # Warning unattended installation of all these with aptitude broke my cinnamon installation (some incompatibility in dependencies)
 # However, it seems not to happen with apt-get, so it looks safer for the moment.
 # As an alternative, it might be useful to use aptitude-robot
-sudo apt-get -ry install guake skype gnome-do unison unison-gtk gftp meld playonlinux virtualbox freemind pdftk umbrello recode ssh sshfs gtg okular audacity pdfshuffler pandoc xournal ispell xclip
+sudo apt-get install guake skype gnome-do unison unison-gtk gftp meld playonlinux virtualbox freemind umbrello pdftk recode ssh sshfs gtg okular audacity pdfshuffler pandoc xournal ispell xclip git-all
+
+# Oracle Java 8 (JDK and JRE)
+sudo aptitude -r install oracle-java8-installer
 
 # Calibre e-book manager (latest binary installation from webpage)
 sudo python -c "import sys; py3 = sys.version_info[0] > 2; u = __import__('urllib.request' if py3 else 'urllib', fromlist=1); exec(u.urlopen('http://status.calibre-ebook.com/linux_installer').read()); main()"
@@ -115,7 +128,7 @@ cd install-tl-*
 #sudo aptitude -ry install perl-tk # only needed for a gui install
 sudo ./install-tl -profile ../texlive.tlpdb
 tlversion=`grep -o 201. release-texlive.txt`
-sudo bash -c "echo -e '\n# LaTeX\nexport MANPATH=/usr/local/texlive/'$tlversion'/texmf/doc/man/:\$MANPATH\nexport INFOPATH=/usr/local/texlive/'$tlversion'/texmf/doc/info/:\$INFOPATH\nexport PATH=/usr/local/texlive/'$tlversion'/bin/i386-linux/:\$PATH' >> /etc/profile"
+sudo bash -c "echo -e '\n# LaTeX\nexport MANPATH=/usr/local/texlive/'$tlversion'/texmf-dist/doc/man/:\$MANPATH\nexport INFOPATH=/usr/local/texlive/'$tlversion'/texmf-dist/doc/info/:\$INFOPATH\nexport PATH=/usr/local/texlive/'$tlversion'/bin/'$arch'-linux/:\$PATH' >> /etc/profile"
 cd ..
 rm -r install-tl-*
 # Still needed from repos:
@@ -129,9 +142,16 @@ sudo aptitude -ry install r-base r-base-dev r-recommended
 
 # RStudio (latest version)
 wget http://www.rstudio.org/download/desktop
-rsversion=`grep -m 1 -o '[[:digit:]][.][[:digit:]][[:digit:]][.][[:digit:]][[:digit:]][[:digit:]]' desktop | head -n 1`
+rsversion=`grep -m 1 -o '[[:digit:]][.][[:digit:]][[:digit:]][.][[:digit:]][[:digit:]][[:digit:]]*' desktop | head -n 1`
 rm desktop
-wget http://download1.rstudio.org/rstudio-$rsversion-i386.deb
+case $arch in
+	i386)
+		rsarch=$arch;;
+	*)
+		rsarch='amd64'
+esac
+
+wget http://download1.rstudio.org/rstudio-$rsversion-$rsarch.deb
 sudo gdebi -n rstudio-$rsversion-i386.deb
 rm rstudio-$rsversion-i386.deb
 
@@ -192,6 +212,10 @@ cd .. && rm -r tl-equivs
 # Finally:
 sudo aptitude install gedit-latex-plugin
 
+# A workaround the latex-plugin who does not find texmf.cnf
+sudo ln -sf `kpsewhich -var-value TEXMFMAIN`/web2c/texmf.cnf /etc/texmf/texmf.cnf
+
+
 # gedit-r-plugin
 # in ubuntu 11.10 repositories there is a Gtk2 outdated version
 # that don't work well, because 11.10 works with Gtk3.
@@ -235,15 +259,10 @@ gsettings set org.gnome.gedit.preferences.editor auto-indent true
 
 
 # Bazaar
-sudo aptitude -ry install bzr-explorer bzr-svn
+# sudo aptitude -ry install bzr-explorer bzr-svn
 
 # Geographical libraries GDAL and Proj4
 sudo aptitude -ry install libgdal-dev libproj-dev
-
-# Insync: Google Drive client for linux (trial)
-#sudo apt-get install insync-beta-ubuntu
-#sudo apt-get install insync-beta-gnome     # GNOME Shell
-#sudo aptitude -ry install insync-beta-cinnamon  # Cinnamon
 
 
 # Gephi: Graph Viz interactive visualization
@@ -259,17 +278,24 @@ rm gephi-*
 
 # Kompozer: web authoring
 # TODO: infer automatically the latest release
-wget kompozer.net
-grep -o http.*download index.html
-#wget http://sourceforge.net/projects/kompozer/files/current/0.8b3/linux-i686/kompozer-0.8b3.es-ES.gcc4.2-i686.tar.gz/download
-wget http://archive.ubuntu.com/ubuntu/pool/universe/k/kompozer/kompozer_0.8~b3.dfsg.1-0.1ubuntu2_i386.deb http://archive.ubuntu.com/ubuntu/pool/universe/k/kompozer/kompozer-data_0.8~b3.dfsg.1-0.1ubuntu2_all.deb
-sudo dpkg -i kompozer*.deb
-rm kompozer*.deb
+#wget kompozer.net
+#grep -o http.*download index.html
+##wget http://sourceforge.net/projects/kompozer/files/current/0.8b3/linux-i686/kompozer-0.8b3.es-ES.gcc4.2-i686.tar.gz/download
+#wget http://archive.ubuntu.com/ubuntu/pool/universe/k/kompozer/kompozer_0.8~b3.dfsg.1-0.1ubuntu2_i386.deb http://archive.ubuntu.com/ubuntu/pool/universe/k/kompozer/kompozer-data_0.8~b3.dfsg.1-0.1ubuntu2_all.deb
+#sudo dpkg -i kompozer*.deb
+#rm kompozer*.deb
 
 # Dropbox
 # Latest version
 wget https://www.dropbox.com/install2
-dbsufix=`grep -o /download?dl=packages/ubuntu/dropbox[_\.0-9]*i386.deb install2`
+case $arch in
+	i386)
+		dbarch=$arch;;
+	*)
+		dbarch='amd64'
+esac
+
+dbsufix=`grep -o /download?dl=packages/ubuntu/dropbox[_\.0-9]*$dbarch.deb install2`
 wget https://www.dropbox.com$dbsufix
 rm install2
 sudo dpkg -i download*
@@ -294,8 +320,13 @@ firefox delicious_bookmarks-2.3.4-fx.xpi
 
 ## alias ll = ls -l for Mint
 if [ $mint ];
-    then echo -e "alias ll='ls -Flh'\nalias la='ls -Flah'" >> ~/.bashrc;
+    then echo -e "alias ll='ls -Flh --group-directories-first'\nalias la='ll -a'" >> ~/.bashrc;
 fi
+
+## Git config
+git config --global user.name "Facundo Muñoz"
+git config --global user.email "facundo.munoz@orleans.inra.fr"
+git config --global push.default simple
 
 
 ## Gnome-do

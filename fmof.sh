@@ -10,13 +10,15 @@ sshfs bayesiano:backups/fmoffacu mnt/
 bkploc='~/mnt'
 
 # Unison profiles
-cp $bkploc/.unison/* .unison
+cp -p $bkploc/.unison/*.prf .unison
 
 # Okular pdf annotations
-cp -r $bkploc/.kde/share/apps/okular/* .kde/share/apps/okular/
+# Going through Unison config profile
+#cp -r $bkploc/.kde/share/apps/okular/* .kde/share/apps/okular/
 
 # Calibre configuration
-cp -r $bkploc/.config/calibre ~/.config
+# Going through Unison config profile
+#cp -r $bkploc/.config/calibre ~/.config
 
 ### eMail
 cp -r $bkploc/.thunderbird ~
