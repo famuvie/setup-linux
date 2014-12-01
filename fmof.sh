@@ -23,4 +23,12 @@ cp -p $bkploc/.unison/*.prf .unison
 ### eMail
 cp -r $bkploc/.thunderbird ~
 
+### R library (and possibly other libs)
+cp -r $bkploc/lib ~
+
+### ~/bin
+cp -r $bkploc/lib ~
+
+
+
 ### Software not installed in main.sh ###
