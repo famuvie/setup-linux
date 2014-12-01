@@ -20,15 +20,28 @@ cp -p $bkploc/.unison/*.prf .unison
 # Going through Unison config profile
 #cp -r $bkploc/.config/calibre ~/.config
 
-### eMail
+### eMail and firefox profiles
 cp -r $bkploc/.thunderbird ~
+cp -r $bkploc/.mozilla/firefox ~
 
 ### R library (and possibly other libs)
 cp -r $bkploc/lib ~
 
 ### ~/bin
-cp -r $bkploc/lib ~
-
+cp -r $bkploc/bin ~
 
 
 ### Software not installed in main.sh ###
+
+#http://www.cytoscape.org/
+#http://www.collab.net/products/giteyeapp
+#http://www.opennx.net/
+# in 64bit systems, solve this bug as explained:
+# http://sourceforge.net/p/opennx/bugs/54/
+
+
+### Firefox plugins:
+# DownThemAll!
+# feedly
+# Shorten URL (bit.ly)
+# Delicious Bookmarks (old version!!)
