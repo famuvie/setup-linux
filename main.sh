@@ -62,6 +62,10 @@ gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E084DAB9 gpg -a --ex
 ## It's a Gephi (and a common) dependency
 sudo add-apt-repository ppa:webupd8team/java
 
+## Timeshift (system backup and restore utility)
+## http://www.teejeetech.in/p/timeshift.html
+sudo apt-add-repository -y ppa:teejee2008/ppa
+
 
 ## Gephi: Graph Viz interactive visualization
 ## I don't want a daily build!
@@ -90,7 +94,7 @@ fi
 # Warning unattended installation of all these with aptitude broke my cinnamon installation (some incompatibility in dependencies)
 # However, it seems not to happen with apt-get, so it looks safer for the moment.
 # As an alternative, it might be useful to use aptitude-robot
-sudo apt-get install guake skype gnome-do unison unison-gtk gftp meld playonlinux virtualbox freemind umbrello pdftk recode ssh sshfs gtg okular audacity pdfshuffler pandoc xournal ispell xclip git-all
+sudo apt-get install guake skype gnome-do unison unison-gtk gftp meld playonlinux virtualbox freemind umbrello pdftk recode ssh sshfs gtg okular audacity pdfshuffler pandoc xournal ispell xclip git-all timeshift
 
 # Oracle Java 8 (JDK and JRE)
 sudo aptitude -r install oracle-java8-installer
