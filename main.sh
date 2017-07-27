@@ -36,11 +36,6 @@ fi
 ### Set up repositories ###
 ###########################
 
-# Bazaar version control
-# This developer ppa isn't necessary
-# Get Bazaar from ubuntu repos
-# sudo add-apt-repository ppa:bzr/ppa
-
 # LibreOffice (unnecessary for Mint)
 if [ ! $mint ];
   then sudo add-apt-repository ppa:libreoffice/ppa;
@@ -75,10 +70,6 @@ sudo add-apt-repository ppa:bit-team/stable
 ## Install the latest stable release in the next section
 #sudo add-apt-repository ppa:rockclimb/gephi-daily
 
-## Insync: Google Drive client for linux
-## This is trial only. Bullshit.
-#wget -O - https://d2t3ff60b2tol4.cloudfront.net/services@insynchq.com.gpg.key | sudo apt-key add -
-#sudo bash -c "echo 'deb http://apt.insynchq.com/mint' $codename' non-free contrib' > /etc/apt/sources.list.d/insync-ppa-$codename.list"
 
 # Update repository information
 sudo apt-get update
