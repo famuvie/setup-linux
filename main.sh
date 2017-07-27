@@ -62,10 +62,13 @@ gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E084DAB9 gpg -a --ex
 ## It's a Gephi (and a common) dependency
 sudo add-apt-repository ppa:webupd8team/java
 
+## Backup
 ## Timeshift (system backup and restore utility)
 ## http://www.teejeetech.in/p/timeshift.html
 sudo apt-add-repository -y ppa:teejee2008/ppa
-
+## Back in Time (system and data backup. Based on rsnapshot)
+sudo add-apt-repository ppa:bit-team/stable
+## Déjà Dup (system and data backup. Encrypted. Based on duplicity)
 
 ## Gephi: Graph Viz interactive visualization
 ## I don't want a daily build!
