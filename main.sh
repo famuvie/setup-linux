@@ -308,6 +308,9 @@ firefox delicious_bookmarks-2.3.4-fx.xpi
 #http://www.yworks.com/en/products_yed_download.html
 
 
+## Oh-my-zsh
+sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
 ################################
 ### Settings and preferences ###
 ################################
@@ -316,21 +319,20 @@ firefox delicious_bookmarks-2.3.4-fx.xpi
 ## TODO:
 ## Configure guake to be run at the begining of the session and get the transparency right
 
+## Default shell
+chsh -s /bin/zsh
+
 ## alias ll = ls -l for Mint
 if [ $mint ];
     then echo -e "alias ll='ls -Flh --group-directories-first'\nalias la='ll -a'" >> ~/.bashrc;
 fi
 
 ## Git config
-git config --global user.name "Facundo Muñoz"
-git config --global user.email "facundo.munoz@orleans.inra.fr"
-git config --global push.default simple
+## handled in the dotfile
+# git config --global user.name "Facundo Muñoz"
+# git config --global user.email "facundo.munoz@inra.fr"
+# git config --global push.default simple
 
-
-## Dotfiles
-git clone git@gitlab.com:famuvie/dotfiles.git ~/.dotfiles
-cd ~/.dotfiles
-make stow-all
 
 ## Gnome-do
 
