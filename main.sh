@@ -13,6 +13,8 @@ if [ `lsb_release -si`=='LinuxMint' ];
 fi
 
 # Mint and Ubuntu correspondence
+# https://en.wikipedia.org/wiki/Linux_Mint_version_history
+# https://en.wikipedia.org/wiki/Ubuntu_version_history
 if [ $mint ];
     then
 	case $codename in
@@ -28,6 +30,8 @@ if [ $mint ];
 			ubuntu_codename='saucy';;	# Ubuntu 13.10
 		qiana )					# Mint 17
 			ubuntu_codename='trusty';;	# Ubuntu 14.04
+		sonya )					# Mint 18.2
+			ubuntu_codename='xenial';;	# Ubuntu 16.04
 	esac
 fi
 
@@ -301,8 +305,8 @@ rm download*
 
 
 # Delicious (Firefox plugin)
-wget https://addons.mozilla.org/firefox/downloads/file/172674/delicious_bookmarks-2.3.4-fx.xpi
-firefox delicious_bookmarks-2.3.4-fx.xpi
+#wget https://addons.mozilla.org/firefox/downloads/file/172674/delicious_bookmarks-2.3.4-fx.xpi
+#firefox delicious_bookmarks-2.3.4-fx.xpi
 
 # yEd graph editor
 #http://www.yworks.com/en/products_yed_download.html
@@ -318,6 +322,12 @@ sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/i
 
 ## TODO:
 ## Configure guake to be run at the begining of the session and get the transparency right
+
+## Dot files
+git clone git@gitlab.com:famuvie/dotfiles.git ~/.dotfiles
+cd .dotfiles
+make stow-all
+cd
 
 ## Default shell
 chsh -s /bin/zsh
