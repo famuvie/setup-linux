@@ -323,12 +323,6 @@ sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/i
 ## TODO:
 ## Configure guake to be run at the begining of the session and get the transparency right
 
-## Dot files
-git clone git@gitlab.com:famuvie/dotfiles.git ~/.dotfiles
-cd .dotfiles
-make stow-all
-cd
-
 ## Default shell
 chsh -s /bin/zsh
 
@@ -362,3 +356,5 @@ fi
 #	sudo cp /usr/share/rubber/rules.ini /usr/share/rubber/rules.ini.bak
 #	sudo bash -c 'sed "s/= epstopdf/= bash epstopdf/" /usr/share/rubber/rules.ini.bak > /usr/share/rubber/rules.ini'
 #	Seems solved now
+
+

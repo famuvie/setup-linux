@@ -7,9 +7,9 @@ sh main.sh
 ## Dotfiles
 git clone git@gitlab.com:famuvie/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
-git fmlt
+git checkout fmlt
 make stow-all
-
+cd
 
 ### Restore personal settings from backup ###
 #sshfs bayesiano:backups/fmoffacu mnt/
@@ -47,4 +47,5 @@ sudo umount mnt
 
 
 ## Restore Work folder from fmhm sync
+mkdir Work
 unison Work 
