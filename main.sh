@@ -55,7 +55,7 @@ sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
 # R-project
 sudo bash -c "echo 'deb http://cran.r-project.org/bin/linux/ubuntu' $ubuntu_codename'/' > /etc/apt/sources.list.d/cran-r-ppa-$ubuntu_codename.list"
 # gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9 # (doesn't work?)
-gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E084DAB9 gpg -a --export E084DAB9 | sudo apt-key add -
+gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E084DAB9 | gpg -a --export E084DAB9 | sudo apt-key add -
 
 ## Oracle (Sun) Java (JRE and JDK)
 ## It's a Gephi (and a common) dependency
