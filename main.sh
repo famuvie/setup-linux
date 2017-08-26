@@ -92,7 +92,9 @@ fi
 # Warning unattended installation of all these with aptitude broke my cinnamon installation (some incompatibility in dependencies)
 # However, it seems not to happen with apt-get, so it looks safer for the moment.
 # As an alternative, it might be useful to use aptitude-robot
-sudo apt-get install guake skype gnome-do unison unison-gtk gftp meld playonlinux virtualbox freemind umbrello pdftk recode ssh sshfs gtg okular audacity pdfshuffler pandoc xournal ispell xclip git-all timeshift stow zsh
+sudo apt-get install guake gnome-do unison unison-gtk gftp meld playonlinux virtualbox umbrello pdftk recode ssh sshfs gtg okular audacity pdfshuffler pandoc xournal ispell xclip git-all timeshift stow zsh
+
+# missing: skype freemind
 
 # Oracle Java 8 (JDK and JRE)
 sudo aptitude -r install oracle-java8-installer
