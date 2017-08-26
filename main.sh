@@ -74,6 +74,13 @@ sudo add-apt-repository ppa:bit-team/stable
 ## Install the latest stable release in the next section
 #sudo add-apt-repository ppa:rockclimb/gephi-daily
 
+## Getdeb project repo
+## http://www.getdeb.net/
+## some packages from here (like freemind)
+## now questioning the need for this
+# sudo bash -c "echo 'deb http://archive.getdeb.net/ubuntu' $ubuntu_codename 'apps' > /etc/apt/sources.list.d/getdeb-$ubuntu_codename.list"
+# wget -q -O- http://archive.getdeb.net/getdeb-archive.key | sudo apt-key add -
+
 
 # Update repository information
 sudo apt-get update
