@@ -81,6 +81,11 @@ sudo add-apt-repository ppa:bit-team/stable
 # sudo bash -c "echo 'deb http://archive.getdeb.net/ubuntu' $ubuntu_codename 'apps' > /etc/apt/sources.list.d/getdeb-$ubuntu_codename.list"
 # wget -q -O- http://archive.getdeb.net/getdeb-archive.key | sudo apt-key add -
 
+## freemind repo
+## http://freemind.sourceforge.net/
+sudo bash -c "echo 'deb http://eric.lavar.de/comp/linux/debian/' 'unstable/' > /etc/apt/sources.list.d/freemind-debian.list"
+sudo bash -c "echo 'deb http://eric.lavar.de/comp/linux/debian/' 'ubuntu/' >> /etc/apt/sources.list.d/freemind-debian.list"
+wget -O - http://eric.lavar.de/comp/linux/debian/deb_zorglub_s_bawue_de.pubkey | sudo apt-key add -
 
 # Update repository information
 sudo apt-get update
