@@ -233,6 +233,7 @@ sudo ln -sf `kpsewhich -var-value TEXMFMAIN`/web2c/texmf.cnf /etc/texmf/texmf.cn
 
 
 # gedit-r-plugin
+# Not maintaned any more.
 # in ubuntu 11.10 repositories there is a Gtk2 outdated version
 # that don't work well, because 11.10 works with Gtk3.
 # We need to install it from the website.
@@ -243,7 +244,7 @@ sudo ln -sf `kpsewhich -var-value TEXMFMAIN`/web2c/texmf.cnf /etc/texmf/texmf.cn
 # rm tmp_rgedit.tar.gz
 # All this is solved now
 # (although the repos don't necessarily have the very latest version)
-sudo aptitude -ry install gedit-r-plugin
+# sudo aptitude -ry install gedit-r-plugin
 
 # Activate interesting plugins:
 # - R integration (RCtrl)
