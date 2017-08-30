@@ -112,7 +112,7 @@ sudo apt-get install freemind guake gnome-do unison unison-gtk gftp meld playonl
 sudo aptitude -r install oracle-java8-installer
 
 # Calibre e-book manager (latest binary installation from webpage)
-sudo python -c "import sys; py3 = sys.version_info[0] > 2; u = __import__('urllib.request' if py3 else 'urllib', fromlist=1); exec(u.urlopen('http://status.calibre-ebook.com/linux_installer').read()); main()"
+sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.py | sudo python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main()"
 
 
 # Multimedia (For Ubuntu)
