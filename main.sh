@@ -158,7 +158,7 @@ sudo aptitude -ry install r-base r-base-dev r-recommended
 
 # RStudio (latest version)
 wget http://www.rstudio.org/download/desktop
-rsversion=`grep -m 1 -o '[[:digit:]][.][[:digit:]][[:digit:]][.][[:digit:]][[:digit:]][[:digit:]]*' desktop | head -n 1`
+rsversion=`grep -m 1 -o '[[:digit:]][.][[:digit:]+][.][[:digit:]][[:digit:]][[:digit:]]*' desktop | head -n 1`
 rm desktop
 case $arch in
 	i386)
