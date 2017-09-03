@@ -48,4 +48,4 @@ sudo umount mnt
 
 ## Restore Work folder from fmhm sync
 mkdir Work
-unison Work 
+unison fmhm 
