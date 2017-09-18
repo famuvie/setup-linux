@@ -3,6 +3,9 @@
 # Code name of Mint/Ubuntu
 codename=`lsb_release -sc`
 
+# System architecture
+arch=`lscpu | grep Architecture: | sed  's/Architecture\: *//g' -`
+
 # Whether this is Mint or Ubuntu
 if [ `lsb_release -si`=='LinuxMint' ];
     then
@@ -10,6 +13,8 @@ if [ `lsb_release -si`=='LinuxMint' ];
 fi
 
 # Mint and Ubuntu correspondence
+# https://en.wikipedia.org/wiki/Linux_Mint_version_history
+# https://en.wikipedia.org/wiki/Ubuntu_version_history
 if [ $mint ];
     then
 	case $codename in
@@ -25,6 +30,8 @@ if [ $mint ];
 			ubuntu_codename='saucy';;	# Ubuntu 13.10
 		qiana )					# Mint 17
 			ubuntu_codename='trusty';;	# Ubuntu 14.04
+		sonya )					# Mint 18.2
+			ubuntu_codename='xenial';;	# Ubuntu 16.04
 	esac
 fi
 
@@ -32,11 +39,6 @@ fi
 ###########################
 ### Set up repositories ###
 ###########################
-
-# Bazaar version control
-# This developer ppa isn't necessary
-# Get Bazaar from ubuntu repos
-# sudo add-apt-repository ppa:bzr/ppa
 
 # LibreOffice (unnecessary for Mint)
 if [ ! $mint ];
@@ -53,18 +55,37 @@ sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
 # R-project
 sudo bash -c "echo 'deb http://cran.r-project.org/bin/linux/ubuntu' $ubuntu_codename'/' > /etc/apt/sources.list.d/cran-r-ppa-$ubuntu_codename.list"
 # gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9 # (doesn't work?)
-gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E084DAB9 gpg -a --export E084DAB9 | sudo apt-key add -
+gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E084DAB9 | gpg -a --export E084DAB9 | sudo apt-key add -
 
+## Oracle (Sun) Java (JRE and JDK)
+## It's a Gephi (and a common) dependency
+sudo add-apt-repository ppa:webupd8team/java
+
+## Backup
+## Timeshift (system backup and restore utility)
+## http://www.teejeetech.in/p/timeshift.html
+sudo apt-add-repository -y ppa:teejee2008/ppa
+## Back in Time (system and data backup. Based on rsnapshot)
+sudo add-apt-repository ppa:bit-team/stable
+## Déjà Dup (system and data backup. Encrypted. Based on duplicity)
 
 ## Gephi: Graph Viz interactive visualization
 ## I don't want a daily build!
 ## Install the latest stable release in the next section
 #sudo add-apt-repository ppa:rockclimb/gephi-daily
 
-## Insync: Google Drive client for linux
-## This is trial only. Bullshit.
-#wget -O - https://d2t3ff60b2tol4.cloudfront.net/services@insynchq.com.gpg.key | sudo apt-key add -
-#sudo bash -c "echo 'deb http://apt.insynchq.com/mint' $codename' non-free contrib' > /etc/apt/sources.list.d/insync-ppa-$codename.list"
+## Getdeb project repo
+## http://www.getdeb.net/
+## some packages from here (like freemind)
+## now questioning the need for this
+# sudo bash -c "echo 'deb http://archive.getdeb.net/ubuntu' $ubuntu_codename 'apps' > /etc/apt/sources.list.d/getdeb-$ubuntu_codename.list"
+# wget -q -O- http://archive.getdeb.net/getdeb-archive.key | sudo apt-key add -
+
+## freemind repo
+## http://freemind.sourceforge.net/
+sudo bash -c "echo 'deb http://eric.lavar.de/comp/linux/debian/' 'unstable/' > /etc/apt/sources.list.d/freemind-debian.list"
+sudo bash -c "echo 'deb http://eric.lavar.de/comp/linux/debian/' 'ubuntu/' >> /etc/apt/sources.list.d/freemind-debian.list"
+wget -O - http://eric.lavar.de/comp/linux/debian/deb_zorglub_s_bawue_de.pubkey | sudo apt-key add -
 
 # Update repository information
 sudo apt-get update
@@ -75,15 +96,23 @@ sudo apt-get update
 ### Install software ###
 ########################
 
-# Basic tools
-sudo apt-get install aptitude
+## Basic tools
+if [ ! $mint ];
+	sudo apt-get install aptitude
+fi
+
 # Warning unattended installation of all these with aptitude broke my cinnamon installation (some incompatibility in dependencies)
 # However, it seems not to happen with apt-get, so it looks safer for the moment.
 # As an alternative, it might be useful to use aptitude-robot
-sudo apt-get -ry install guake skype gnome-do unison unison-gtk gftp meld playonlinux virtualbox freemind pdftk umbrello recode ssh sshfs gtg okular audacity pdfshuffler pandoc xournal ispell xclip
+sudo apt-get install freemind guake gnome-do keepass2 unison unison-gtk gftp meld playonlinux virtualbox umbrello pdftk recode ssh sshfs gtg okular audacity pdfshuffler pandoc xournal ispell xclip git-all timeshift stow zsh
+
+# missing: skype
+
+# Oracle Java 8 (JDK and JRE)
+sudo aptitude -r install oracle-java8-installer
 
 # Calibre e-book manager (latest binary installation from webpage)
-sudo python -c "import sys; py3 = sys.version_info[0] > 2; u = __import__('urllib.request' if py3 else 'urllib', fromlist=1); exec(u.urlopen('http://status.calibre-ebook.com/linux_installer').read()); main()"
+sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.py | sudo python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main()"
 
 
 # Multimedia (For Ubuntu)
@@ -115,7 +144,7 @@ cd install-tl-*
 #sudo aptitude -ry install perl-tk # only needed for a gui install
 sudo ./install-tl -profile ../texlive.tlpdb
 tlversion=`grep -o 201. release-texlive.txt`
-sudo bash -c "echo -e '\n# LaTeX\nexport MANPATH=/usr/local/texlive/'$tlversion'/texmf/doc/man/:\$MANPATH\nexport INFOPATH=/usr/local/texlive/'$tlversion'/texmf/doc/info/:\$INFOPATH\nexport PATH=/usr/local/texlive/'$tlversion'/bin/i386-linux/:\$PATH' >> /etc/profile"
+sudo bash -c "echo -e '\n# LaTeX\nexport MANPATH=/usr/local/texlive/'$tlversion'/texmf-dist/doc/man/:\$MANPATH\nexport INFOPATH=/usr/local/texlive/'$tlversion'/texmf-dist/doc/info/:\$INFOPATH\nexport PATH=/usr/local/texlive/'$tlversion'/bin/'$arch'-linux/:\$PATH' >> /etc/profile"
 cd ..
 rm -r install-tl-*
 # Still needed from repos:
@@ -129,9 +158,16 @@ sudo aptitude -ry install r-base r-base-dev r-recommended
 
 # RStudio (latest version)
 wget http://www.rstudio.org/download/desktop
-rsversion=`grep -m 1 -o '[[:digit:]][.][[:digit:]][[:digit:]][.][[:digit:]][[:digit:]][[:digit:]]' desktop | head -n 1`
+rsversion=`grep -m 1 -o '[[:digit:]][.][[:digit:]+][.][[:digit:]][[:digit:]][[:digit:]]*' desktop | head -n 1`
 rm desktop
-wget http://download1.rstudio.org/rstudio-$rsversion-i386.deb
+case $arch in
+	i386)
+		rsarch=$arch;;
+	*)
+		rsarch='amd64'
+esac
+
+wget http://download1.rstudio.org/rstudio-$rsversion-$rsarch.deb
 sudo gdebi -n rstudio-$rsversion-i386.deb
 rm rstudio-$rsversion-i386.deb
 
@@ -192,7 +228,12 @@ cd .. && rm -r tl-equivs
 # Finally:
 sudo aptitude install gedit-latex-plugin
 
+# A workaround the latex-plugin who does not find texmf.cnf
+sudo ln -sf `kpsewhich -var-value TEXMFMAIN`/web2c/texmf.cnf /etc/texmf/texmf.cnf
+
+
 # gedit-r-plugin
+# Not maintaned any more.
 # in ubuntu 11.10 repositories there is a Gtk2 outdated version
 # that don't work well, because 11.10 works with Gtk3.
 # We need to install it from the website.
@@ -203,7 +244,7 @@ sudo aptitude install gedit-latex-plugin
 # rm tmp_rgedit.tar.gz
 # All this is solved now
 # (although the repos don't necessarily have the very latest version)
-sudo aptitude -ry install gedit-r-plugin
+# sudo aptitude -ry install gedit-r-plugin
 
 # Activate interesting plugins:
 # - R integration (RCtrl)
@@ -235,15 +276,10 @@ gsettings set org.gnome.gedit.preferences.editor auto-indent true
 
 
 # Bazaar
-sudo aptitude -ry install bzr-explorer bzr-svn
+# sudo aptitude -ry install bzr-explorer bzr-svn
 
 # Geographical libraries GDAL and Proj4
 sudo aptitude -ry install libgdal-dev libproj-dev
-
-# Insync: Google Drive client for linux (trial)
-#sudo apt-get install insync-beta-ubuntu
-#sudo apt-get install insync-beta-gnome     # GNOME Shell
-#sudo aptitude -ry install insync-beta-cinnamon  # Cinnamon
 
 
 # Gephi: Graph Viz interactive visualization
@@ -259,17 +295,24 @@ rm gephi-*
 
 # Kompozer: web authoring
 # TODO: infer automatically the latest release
-wget kompozer.net
-grep -o http.*download index.html
-#wget http://sourceforge.net/projects/kompozer/files/current/0.8b3/linux-i686/kompozer-0.8b3.es-ES.gcc4.2-i686.tar.gz/download
-wget http://archive.ubuntu.com/ubuntu/pool/universe/k/kompozer/kompozer_0.8~b3.dfsg.1-0.1ubuntu2_i386.deb http://archive.ubuntu.com/ubuntu/pool/universe/k/kompozer/kompozer-data_0.8~b3.dfsg.1-0.1ubuntu2_all.deb
-sudo dpkg -i kompozer*.deb
-rm kompozer*.deb
+#wget kompozer.net
+#grep -o http.*download index.html
+##wget http://sourceforge.net/projects/kompozer/files/current/0.8b3/linux-i686/kompozer-0.8b3.es-ES.gcc4.2-i686.tar.gz/download
+#wget http://archive.ubuntu.com/ubuntu/pool/universe/k/kompozer/kompozer_0.8~b3.dfsg.1-0.1ubuntu2_i386.deb http://archive.ubuntu.com/ubuntu/pool/universe/k/kompozer/kompozer-data_0.8~b3.dfsg.1-0.1ubuntu2_all.deb
+#sudo dpkg -i kompozer*.deb
+#rm kompozer*.deb
 
 # Dropbox
 # Latest version
 wget https://www.dropbox.com/install2
-dbsufix=`grep -o /download?dl=packages/ubuntu/dropbox[_\.0-9]*i386.deb install2`
+case $arch in
+	i386)
+		dbarch=$arch;;
+	*)
+		dbarch='amd64'
+esac
+
+dbsufix=`grep -o /download?dl=packages/ubuntu/dropbox[_\.0-9]*$dbarch.deb install2`
 wget https://www.dropbox.com$dbsufix
 rm install2
 sudo dpkg -i download*
@@ -277,12 +320,15 @@ rm download*
 
 
 # Delicious (Firefox plugin)
-wget https://addons.mozilla.org/firefox/downloads/file/172674/delicious_bookmarks-2.3.4-fx.xpi
-firefox delicious_bookmarks-2.3.4-fx.xpi
+#wget https://addons.mozilla.org/firefox/downloads/file/172674/delicious_bookmarks-2.3.4-fx.xpi
+#firefox delicious_bookmarks-2.3.4-fx.xpi
 
 # yEd graph editor
 #http://www.yworks.com/en/products_yed_download.html
 
+
+## Oh-my-zsh
+sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
 ################################
 ### Settings and preferences ###
@@ -292,10 +338,19 @@ firefox delicious_bookmarks-2.3.4-fx.xpi
 ## TODO:
 ## Configure guake to be run at the begining of the session and get the transparency right
 
+## Default shell
+chsh -s /bin/zsh
+
 ## alias ll = ls -l for Mint
 if [ $mint ];
-    then echo -e "alias ll='ls -Flh'\nalias la='ls -Flah'" >> ~/.bashrc;
+    then echo -e "alias ll='ls -Flh --group-directories-first'\nalias la='ll -a'" >> ~/.bashrc;
 fi
+
+## Git config
+## handled in the dotfile
+# git config --global user.name "Facundo Muñoz"
+# git config --global user.email "facundo.munoz@inra.fr"
+# git config --global push.default simple
 
 
 ## Gnome-do
@@ -316,3 +371,5 @@ fi
 #	sudo cp /usr/share/rubber/rules.ini /usr/share/rubber/rules.ini.bak
 #	sudo bash -c 'sed "s/= epstopdf/= bash epstopdf/" /usr/share/rubber/rules.ini.bak > /usr/share/rubber/rules.ini'
 #	Seems solved now
+
+

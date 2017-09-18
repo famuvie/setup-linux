@@ -4,13 +4,18 @@
 
 sh main.sh
 
+## Dotfiles
+git clone git@gitlab.com:famuvie/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
+git checkout fmlt
+make stow-all
+cd
 
 ### Restore personal settings from backup ###
-sshfs bayesiano:backups/fmoffacu mnt/
+#sshfs bayesiano:backups/fmoffacu mnt/
+sshfs 192.168.0.2: mnt
 bkploc='~/mnt'
 
-# Unison profiles
-cp -p $bkploc/.unison/*.prf .unison
 
 # Okular pdf annotations
 # Going through Unison config profile
@@ -27,21 +32,20 @@ cp -r $bkploc/.mozilla/firefox ~
 ### R library (and possibly other libs)
 cp -r $bkploc/lib ~
 
+### Virtualbox VMs
+rsync -azv --progress 192.168.0.2:/media/facu/Toshiba1T/VirtualBox\ VMs ~
+
 ### ~/bin
-cp -r $bkploc/bin ~
+#cp -r $bkploc/bin ~
 
 
 ### Software not installed in main.sh ###
 
-#http://www.cytoscape.org/
-#http://www.collab.net/products/giteyeapp
-#http://www.opennx.net/
-# in 64bit systems, solve this bug as explained:
-# http://sourceforge.net/p/opennx/bugs/54/
+
+### Close connection
+sudo umount mnt
 
 
-### Firefox plugins:
-# DownThemAll!
-# feedly
-# Shorten URL (bit.ly)
-# Delicious Bookmarks (old version!!)
+## Restore Work folder from fmhm sync
+mkdir Work
+unison fmhm 
