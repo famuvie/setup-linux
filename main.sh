@@ -87,6 +87,11 @@ sudo bash -c "echo 'deb http://eric.lavar.de/comp/linux/debian/' 'unstable/' > /
 sudo bash -c "echo 'deb http://eric.lavar.de/comp/linux/debian/' 'ubuntu/' >> /etc/apt/sources.list.d/freemind-debian.list"
 wget -O - http://eric.lavar.de/comp/linux/debian/deb_zorglub_s_bawue_de.pubkey | sudo apt-key add -
 
+
+## sublime text (stable)
+wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+
 # Update repository information
 sudo apt-get update
 
@@ -104,9 +109,13 @@ fi
 # Warning unattended installation of all these with aptitude broke my cinnamon installation (some incompatibility in dependencies)
 # However, it seems not to happen with apt-get, so it looks safer for the moment.
 # As an alternative, it might be useful to use aptitude-robot
-sudo apt-get install freemind guake gnome-do keepass2 unison unison-gtk gftp meld playonlinux virtualbox umbrello pdftk recode ssh sshfs gtg okular audacity pdfshuffler pandoc xdotool xournal ispell xclip git-all timeshift stow zsh
+sudo apt-get install apt-transport-https freemind guake gnome-do keepass2 unison unison-gtk gftp meld playonlinux virtualbox virtualbox-qt umbrello pdftk recode ssh sshfs gtg okular audacity pdfshuffler pandoc xdotool xournal ispell xclip git-all timeshift stow zsh
 
 # missing: skype
+
+# Sublime Text
+sudo aptitude install sublime-text
+
 
 # Oracle Java 8 (JDK and JRE)
 sudo aptitude -r install oracle-java8-installer
