@@ -326,7 +326,7 @@ wget https://www.dropbox.com$dbsufix
 rm install2
 sudo dpkg -i download*
 rm download*
-
+sudo aptitude -r install nemo-dropbox
 
 # Delicious (Firefox plugin)
 #wget https://addons.mozilla.org/firefox/downloads/file/172674/delicious_bookmarks-2.3.4-fx.xpi
