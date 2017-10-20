@@ -40,10 +40,6 @@ fi
 ### Set up repositories ###
 ###########################
 
-# LibreOffice (unnecessary for Mint)
-if [ ! $mint ];
-  then sudo add-apt-repository ppa:libreoffice/ppa;
-fi
 
 # LaTeX ##
 # There is no PPA for texlive
