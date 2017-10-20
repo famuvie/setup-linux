@@ -117,8 +117,8 @@ sudo aptitude install sublime-text
 sudo aptitude -r install oracle-java8-installer
 
 # Calibre e-book manager (latest binary installation from webpage)
-sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.py | sudo python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main()"
-
+#sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.py | sudo python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main()"
+sudo aptitude -r install calibre
 
 # Multimedia (For Ubuntu)
 if [ ! $mint ];
