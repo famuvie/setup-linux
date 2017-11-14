@@ -346,6 +346,29 @@ sudo aptitude -r install nemo-dropbox
 ## Oh-my-zsh
 sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
+
+
+#############
+### Fonts ###
+#############
+
+## Mozilla Fira Fonts
+## (used for instance in Beamer's m theme)
+## taken from:
+## https://stevescott.ca/2016-10-20-installing-the-fira-font-in-ubuntu.html
+
+wget https://github.com/carrois/Fira/archive/master.zip
+unzip master.zip
+sudo mkdir -p /usr/share/fonts/opentype/fira_code
+sudo mkdir -p /usr/share/fonts/opentype/fira_mono
+sudo mkdir -p /usr/share/fonts/opentype/fira_sans
+sudo cp Fira-master/Fira_Code_3_2/Fonts/FiraCode_OTF_32/* /usr/share/fonts/opentype/fira_code
+sudo cp Fira-master/Fira_Mono_3_2/Fonts/FiraMono_OTF_32/* /usr/share/fonts/opentype/fira_mono
+sudo cp Fira-master/Fira_Sans_4_2/Fonts/FiraSans_OTF_4203/Normal/Roman/* /usr/share/fonts/opentype/fira_sans
+sudo cp Fira-master/Fira_Sans_4_2/Fonts/FiraSans_OTF_4203/Normal/Italic/* /usr/share/fonts/opentype/fira_sans
+
+
+
 ################################
 ### Settings and preferences ###
 ################################
