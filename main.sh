@@ -165,6 +165,9 @@ sudo aptitude -ry install texlive-full perl-tk
 # Core R, recommended and development packages (for compilation of sources)
 sudo aptitude -ry install r-base r-base-dev r-recommended
 
+# Other precompiled R-packages
+sudo aptitude -ry install ggobi r-cran-rggobi
+
 # RStudio (latest version)
 wget http://www.rstudio.org/download/desktop
 rsversion=`grep -m 1 -o '[[:digit:]][.][[:digit:]+][.][[:digit:]][[:digit:]][[:digit:]]*' desktop | head -n 1`
