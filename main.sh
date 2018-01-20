@@ -17,22 +17,7 @@ fi
 # https://en.wikipedia.org/wiki/Ubuntu_version_history
 if [ $mint ];
     then
-	case $codename in
-		lisa )					# Mint 12
-			ubuntu_codename='oneiric';;	# Ubuntu 11.10
-		maya )					# Mint 13
-			ubuntu_codename='precise';;	# Ubuntu 12.04
-		nadia )					# Mint 14
-			ubuntu_codename='quantal';;	# Ubuntu 12.10
-		olivia )				# Mint 15
-			ubuntu_codename='raring';;	# Ubuntu 13.04
-		petra )					# Mint 16
-			ubuntu_codename='saucy';;	# Ubuntu 13.10
-		qiana )					# Mint 17
-			ubuntu_codename='trusty';;	# Ubuntu 14.04
-		sonya )					# Mint 18.2
-			ubuntu_codename='xenial';;	# Ubuntu 16.04
-	esac
+	ubuntu_codename=`awk -F "=" '/CODENAME/{print $2}' /etc/upstream-release/lsb-release`;
 fi
 
 
