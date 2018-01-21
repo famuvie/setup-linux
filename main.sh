@@ -164,9 +164,10 @@ case $arch in
 		rsarch='amd64'
 esac
 
-wget http://download1.rstudio.org/rstudio-$ubuntu_codename-$rsversion-$rsarch.deb
-sudo gdebi -n rstudio-$ubuntu_codename-$rsversion-i386.deb
-rm rstudio-$ubuntu_codename-$rsversion-i386.deb
+rsfname=rstudio-$ubuntu_codename-$rsversion-$rsarch.deb
+wget http://download1.rstudio.org/$rsfname
+sudo gdebi -n $rsfname
+rm $rsfname
 
 # Eclipse IDE + StatET
 # Follow instructions from 
