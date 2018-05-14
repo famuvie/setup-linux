@@ -89,6 +89,9 @@ wget -O - http://eric.lavar.de/comp/linux/debian/deb_zorglub_s_bawue_de.pubkey |
 wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
 echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
 
+## NextCloud desktop client
+sudo add-apt-repository ppa:nextcloud-devs/client
+
 # Update repository information
 sudo apt-get update
 
@@ -334,6 +337,10 @@ rm install
 sudo dpkg -i download*
 rm download*
 sudo aptitude -r install nemo-dropbox
+
+
+## NextCloud desktop client
+sudo aptitude -ry install nextcloud-client
 
 # Delicious (Firefox plugin)
 #wget https://addons.mozilla.org/firefox/downloads/file/172674/delicious_bookmarks-2.3.4-fx.xpi
