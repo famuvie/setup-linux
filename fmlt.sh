@@ -7,6 +7,7 @@ sh main.sh
 ## ssh key pair
 if [ ! -e ~/.ssh/id_rsa.pub ]
 then
+	## Or better restore them from a back-up!
 	ssh-keygen -t rsa -C "facundo.munoz@cirad.fr" -b 4096
 fi
 
@@ -20,7 +21,6 @@ git checkout -- .  # reset to dotfile versions in the repo
 cd
 
 ### Restore personal settings from backup ###
-#sshfs bayesiano:backups/fmoffacu mnt/
 sshfs 192.168.0.2: mnt
 bkploc='~/mnt'
 

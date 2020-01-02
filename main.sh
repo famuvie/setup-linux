@@ -35,20 +35,21 @@ fi
 # sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
 
 # R-project
-sudo bash -c "echo 'deb http://cran.r-project.org/bin/linux/ubuntu' $ubuntu_codename'/' > /etc/apt/sources.list.d/cran-r-ppa-$ubuntu_codename.list"
-# gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9 # (doesn't work?)
-gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E084DAB9 | gpg -a --export E084DAB9 | sudo apt-key add -
+sudo bash -c "echo 'deb http://cloud.r-project.org/bin/linux/ubuntu' $ubuntu_codename'-cran35/' > /etc/apt/sources.list.d/cran-r-ppa-$ubuntu_codename.list"
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
 
 ## Oracle (Sun) Java (JRE and JDK)
 ## It's a Gephi (and a common) dependency
-sudo add-apt-repository ppa:webupd8team/java
+## This is discontinued due to a change in the licensing of Oracle JDK
+## sudo add-apt-repository ppa:webupd8team/java
 
 ## Backup
 ## Timeshift (system backup and restore utility)
 ## http://www.teejeetech.in/p/timeshift.html
-sudo apt-add-repository -y ppa:teejee2008/ppa
+## This is now installed by default in Mint
+## sudo apt-add-repository -y ppa:teejee2008/ppa
 ## Back in Time (system and data backup. Based on rsnapshot)
-sudo add-apt-repository ppa:bit-team/stable
+## sudo add-apt-repository ppa:bit-team/stable
 ## Déjà Dup (system and data backup. Encrypted. Based on duplicity)
 
 ## Gephi: Graph Viz interactive visualization
@@ -65,17 +66,18 @@ sudo add-apt-repository ppa:bit-team/stable
 
 ## freemind repo
 ## http://freemind.sourceforge.net/
-sudo bash -c "echo 'deb http://eric.lavar.de/comp/linux/debian/' 'unstable/' > /etc/apt/sources.list.d/freemind-debian.list"
-sudo bash -c "echo 'deb http://eric.lavar.de/comp/linux/debian/' 'ubuntu/' >> /etc/apt/sources.list.d/freemind-debian.list"
-wget -O - http://eric.lavar.de/comp/linux/debian/deb_zorglub_s_bawue_de.pubkey | sudo apt-key add -
+## Repo no longer maintained by Eric Lavarde. It is now available as a snap package.
+## sudo bash -c "echo 'deb http://eric.lavar.de/comp/linux/debian/' 'unstable/' > /etc/apt/sources.list.d/freemind-debian.list"
+## sudo bash -c "echo 'deb http://eric.lavar.de/comp/linux/debian/' 'ubuntu/' >> /etc/apt/sources.list.d/freemind-debian.list"
+## wget -O - http://eric.lavar.de/comp/linux/debian/deb_zorglub_s_bawue_de.pubkey | sudo apt-key add -
 
+sudo aptitude -r install snapd
+sudo snap install freemind
 
 ## sublime text (stable)
-wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
-echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
-
-## NextCloud desktop client
-sudo add-apt-repository ppa:nextcloud-devs/client
+## Now available in repos
+## wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+## echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
 
 # Update repository information
 sudo apt-get update
@@ -94,16 +96,28 @@ fi
 # Warning unattended installation of all these with aptitude broke my cinnamon installation (some incompatibility in dependencies)
 # However, it seems not to happen with apt-get, so it looks safer for the moment.
 # As an alternative, it might be useful to use aptitude-robot
-sudo apt-get install apt-transport-https ccache freemind guake gnome-do gnome-do-plugins gparted hamster-indicator htop keepass2 unison unison-gtk gftp meld playonlinux virtualbox virtualbox-qt umbrello pdftk recode ssh sshfs gtg okular audacity pdfshuffler pandoc pandoc-citeproc xdotool xournal ispell xclip git-all timeshift tmux stow zsh
+sudo apt-get install apt-transport-https ccache csvkit guake gnome-do gnome-do-plugins gparted htop keepass2 unison unison-gtk gftp libssl-dev meld playonlinux virtualbox virtualbox-qt umbrello recode ssh sshfs gtg okular audacity pdfshuffler pandoc pandoc-citeproc xdotool xournal ispell xclip git-all timeshift tmux stow zsh
 
-# missing: skype
+# Other precompiled software as snap packages:
+sudo snap install freemind
+sudo snap install pdftk
+sudo snap install --classic skype
+
+# Hamster time tracker
+# The project is undergoing a major restructuration
+# https://github.com/projecthamster/hamster/wiki
+# During 2020 there will be a major upgrade to hamster v3.0
+# For the moment, install from source following the instructions in the site.
+# Once installed, add the applet to the panel:
+# right-click in panel, Applets, Download, refresh database, search hamster and download.
+# Then manage, install and configure.
 
 # Sublime Text
 sudo aptitude install sublime-text
 
 
 # Oracle Java 8 (JDK and JRE)
-sudo aptitude -r install oracle-java8-installer
+# sudo aptitude -r install oracle-java8-installer
 
 # Calibre e-book manager (latest binary installation from webpage)
 # better install from official repo
@@ -158,7 +172,7 @@ sudo aptitude -ry install ggobi r-cran-rggobi
 
 # RStudio (latest version)
 wget http://www.rstudio.org/download/desktop
-rsversion=`grep -m 1 -o '[[:digit:]][.][[:digit:]+][.][[:digit:]][[:digit:]][[:digit:]]*' desktop | head -n 1`
+rsversion=`grep "RStudio Desktop" desktop | grep -m 1 -o '[[:digit:]][.][[:digit:]+][.][[:digit:]][[:digit:]][[:digit:]]*' | head -n 1`
 rm desktop
 case $arch in
 	i386)
@@ -167,10 +181,16 @@ case $arch in
 		rsarch='amd64'
 esac
 
-rsfname=rstudio-$ubuntu_codename-$rsversion-$rsarch.deb
-wget http://download1.rstudio.org/$rsfname
+rsfname=$ubuntu_codename/rstudio-$rsversion-$rsarch.deb
+wget https://download1.rstudio.org/desktop/$rsfname
 sudo gdebi -n $rsfname
 rm $rsfname
+
+## Fix issue with RStudio and the Nouveau Nvidia driver
+## https://github.com/rstudio/rstudio/issues/3781
+echo "QT_XCB_FORCE_SOFTWARE_OPENGL=1 /usr/lib/rstudio/bin/rstudio" > ~/bin/rstudio
+chmod +x ~/bin/rstudio
+sudo sed -i 's/\/usr\/lib\/rstudio\/bin\/rstudio/QT_XCB_FORCE_SOFTWARE_OPENGL=1 \/usr\/lib\/rstudio\/bin\/rstudio/' /usr/share/applications/rstudio.desktop
 
 # Eclipse IDE + StatET
 # Follow instructions from 
@@ -284,7 +304,8 @@ rm $rsfname
 sudo aptitude -ry install libgdal-dev libproj-dev
 
 
-# Gephi: Graph Viz interactive visualization
+# Gephi: Graph Viz interactive visualization 
+# https://gephi.org/
 # This is the latest release up to date.
 # Moved to GitHub
 # wget https://launchpad.net/gephi
@@ -309,7 +330,7 @@ rm gephi-*
 
 # Dropbox
 # Latest version
-wget https://www.dropbox.com/install
+wget https://linux.dropbox.com/packages/ubuntu/
 case $arch in
 	i386)
 		dbarch=$arch;;
@@ -317,20 +338,13 @@ case $arch in
 		dbarch='amd64'
 esac
 
-dbsufix=`grep -o /download?dl=packages/ubuntu/dropbox[_\.0-9]*$dbarch.deb install`
-wget https://www.dropbox.com$dbsufix
-rm install
-sudo dpkg -i download*
-rm download*
+dbsuffix=`grep -o dropbox[_\.0-9]*$dbarch.deb index.html | tail -1`
+wget https://linux.dropbox.com/packages/ubuntu/$dbsuffix
+rm index.html
+sudo dpkg -i dropbox*
+rm dropbox*
 sudo aptitude -r install nemo-dropbox
 
-
-## NextCloud desktop client
-sudo aptitude -ry install nextcloud-client
-
-# Delicious (Firefox plugin)
-#wget https://addons.mozilla.org/firefox/downloads/file/172674/delicious_bookmarks-2.3.4-fx.xpi
-#firefox delicious_bookmarks-2.3.4-fx.xpi
 
 # yEd graph editor
 #http://www.yworks.com/en/products_yed_download.html
@@ -340,6 +354,13 @@ sudo aptitude -ry install nextcloud-client
 sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
 
+## Zotero
+## Config the data-directory to point to ~/Work/logistica/Zotero
+sudo snap install zotero-snap
+
+
+## Tomboy
+sudo aptitude -r install tomboy
 
 #############
 ### Fonts ###
@@ -350,16 +371,12 @@ sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/i
 ## taken from:
 ## https://stevescott.ca/2016-10-20-installing-the-fira-font-in-ubuntu.html
 
-wget https://github.com/carrois/Fira/archive/master.zip
+wget https://github.com/bBoxType/FiraSans/archive/master.zip
 unzip master.zip
-sudo mkdir -p /usr/share/fonts/opentype/fira_code
-sudo mkdir -p /usr/share/fonts/opentype/fira_mono
-sudo mkdir -p /usr/share/fonts/opentype/fira_sans
-sudo cp Fira-master/Fira_Code_3_2/Fonts/FiraCode_OTF_32/* /usr/share/fonts/opentype/fira_code
-sudo cp Fira-master/Fira_Mono_3_2/Fonts/FiraMono_OTF_32/* /usr/share/fonts/opentype/fira_mono
-sudo cp Fira-master/Fira_Sans_4_2/Fonts/FiraSans_OTF_4203/Normal/Roman/* /usr/share/fonts/opentype/fira_sans
-sudo cp Fira-master/Fira_Sans_4_2/Fonts/FiraSans_OTF_4203/Normal/Italic/* /usr/share/fonts/opentype/fira_sans
-
+sudo mkdir -p /usr/share/fonts/opentype/fira
+sudo mkdir -p /usr/share/fonts/truetype/fira
+sudo find FiraSans-master/ -name "*.otf" -exec cp {} /usr/share/fonts/opentype/fira/ \;
+sudo find FiraSans-master/ -name "*.ttf" -exec cp {} /usr/share/fonts/truetype/fira/ \;
 
 
 ################################
@@ -407,3 +424,16 @@ sudo cp Fira-master/Fira_Sans_4_2/Fonts/FiraSans_OTF_4203/Normal/Italic/* /usr/s
 #	Seems solved now
 
 
+
+################
+### Dotfiles ###
+################
+
+## Restore from backup
+.dotfiles
+.ssh
+.thunderbird
+.gconf/apps/gnome-do
+.mozilla/firefox
+.rstudio-desktop
+.kde/share/apps/okular
