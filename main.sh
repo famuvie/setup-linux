@@ -96,7 +96,7 @@ fi
 # Warning unattended installation of all these with aptitude broke my cinnamon installation (some incompatibility in dependencies)
 # However, it seems not to happen with apt-get, so it looks safer for the moment.
 # As an alternative, it might be useful to use aptitude-robot
-sudo apt-get install apt-transport-https ccache csvkit guake gnome-do gnome-do-plugins gparted htop keepass2 unison unison-gtk gftp libssl-dev meld playonlinux virtualbox virtualbox-qt umbrello recode ssh sshfs gtg okular audacity pdfshuffler pandoc pandoc-citeproc xdotool xournal ispell xclip git-all timeshift tmux stow zsh
+sudo apt-get install apt-transport-https ccache csvkit guake gnome-do gnome-do-plugins gimp gparted htop keepass2 unison unison-gtk gftp libssl-dev meld playonlinux virtualbox virtualbox-qt umbrello recode ssh sshfs gtg okular audacity pdfshuffler pandoc pandoc-citeproc xdotool xournal ispell xclip git-all timeshift tmux stow zsh
 
 # Other precompiled software as snap packages:
 sudo snap install freemind
@@ -167,6 +167,15 @@ sudo aptitude -ry install texlive-full perl-tk
 # Core R, recommended and development packages (for compilation of sources)
 sudo aptitude -ry install r-base r-base-dev r-recommended
 
+## Libraries needed for specific packages
+sudo aptitude -r install libudunits2-dev  # units
+sudo aptitude -r install libfontconfig1-dev  # systemfonts
+sudo aptitude -r install libcairo2-dev  # gdtools
+sudo aptitude -r install libxt-dev libgtk2.0-dev  # Cairo
+sudo aptitude -r install libv8-dev libjq-dev libprotobuf-dev protobuf-compiler  # geojsonio
+
+
+
 # Other precompiled R-packages
 sudo aptitude -ry install ggobi r-cran-rggobi
 
@@ -180,6 +189,7 @@ case $arch in
 	*)
 		rsarch='amd64'
 esac
+
 
 rsfname=$ubuntu_codename/rstudio-$rsversion-$rsarch.deb
 wget https://download1.rstudio.org/desktop/$rsfname
