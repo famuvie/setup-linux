@@ -98,6 +98,9 @@ fi
 # As an alternative, it might be useful to use aptitude-robot
 sudo apt-get install apt-transport-https ccache csvkit guake gnome-do gnome-do-plugins gimp gparted htop keepass2 unison unison-gtk gftp libssl-dev meld playonlinux virtualbox virtualbox-qt umbrello recode ssh sshfs gtg okular audacity pdfshuffler pandoc pandoc-citeproc xdotool xournal ispell xclip git-all timeshift tmux stow zsh
 
+## MS fonts
+sudo aptitude -r install ttf-mscorefonts-installer
+
 # Other precompiled software as snap packages:
 sudo snap install freemind
 sudo snap install pdftk
