@@ -128,6 +128,8 @@ sudo flatpak install pdfchain
 sudo flatpak install Skype
 sudo flatpak install telegram
 
+# Git interface
+sudo flatpak install gitahead
 
 # Hamster time tracker
 # https://github.com/projecthamster/hamster/wiki
