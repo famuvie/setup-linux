@@ -371,7 +371,7 @@ sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/i
 
 ## Zotero
 ## Config the data-directory to point to ~/Work/logistica/Zotero
-sudo snap install zotero-snap
+sudo flatpak install zotero
 
 
 ## Tomboy
