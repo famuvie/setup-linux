@@ -481,6 +481,13 @@ rsync -azv .config/RStudio/ ~/.config/RStudio
 ## Okular moved the metadata storage
 rsync -azv .kde/share/apps/okular ~/.local/share/
 
+## Linux mint web apps
+rsync -azv .local/share/applications/webapp-* ~/.local/share/applications/
+
+## Firefox - UVEG
+rsync -azv .local/share/applications/firefox-uveg.desktop ~/.local/share/applications/
+
+
 ####################
 ### Restore Work ###
 ####################
