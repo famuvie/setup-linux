@@ -492,6 +492,9 @@ rsync -azv --delete .local/share/ice/firefox/* ~/.local/share/ice/firefox/
 ## Firefox - UVEG
 rsync -azv .local/share/applications/firefox-uveg.desktop ~/.local/share/applications/
 
+## Mattermost profiles (from manual install to flatpak config location)
+rsync -azv --delete .config/Mattermost ~/.var/app/com.mattermost.Desktop/config
+
 
 ####################
 ### Restore Work ###
