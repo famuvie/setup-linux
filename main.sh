@@ -35,8 +35,12 @@ fi
 # sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
 
 # R-project
-sudo bash -c "echo 'deb http://cloud.r-project.org/bin/linux/ubuntu' $ubuntu_codename'-cran35/' > /etc/apt/sources.list.d/cran-r-ppa-$ubuntu_codename.list"
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+## add the signing key (by Michael Rutter) for these repos
+## To verify key, run gpg --show-keys /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc 
+## Fingerprint: E298A3A825C0D65DFD57CBB651716619E084DAB9
+wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+## add the R 4.0 repo from CRAN -- adjust 'focal' to 'groovy' or 'bionic' as needed
+sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $ubuntu_codename-cran40/"
 
 ## Oracle (Sun) Java (JRE and JDK)
 ## It's a Gephi (and a common) dependency
