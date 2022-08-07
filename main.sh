@@ -184,7 +184,7 @@ sudo aptitude -ry install ggobi # r-cran-rggobi
 
 # RStudio (latest version)
 wget http://www.rstudio.org/download/desktop
-rsversion=`grep "RStudio Desktop" desktop | grep -m 1 -o '[[:digit:]][.][[:digit:]+][.][[:digit:]][[:digit:]][[:digit:]]*' | head -n 1`
+rsversion=`grep -Eo -m1 '[[:digit:]]{4}\\.[[:digit:]]{2}\\.[[:digit:]]+-[[:digit:]]+' desktop`
 rm desktop
 case $arch in
 	i386)
@@ -194,16 +194,17 @@ case $arch in
 esac
 
 
-rsfname=$ubuntu_codename/rstudio-$rsversion-$rsarch.deb
-wget https://download1.rstudio.org/desktop/$rsfname
+rsfname=rstudio-$rsversion-$rsarch.deb
+wget https://download1.rstudio.org/desktop/$ubuntu_codename/$rsarch/$rsfname
 sudo gdebi -n $rsfname
 rm $rsfname
 
+## Check whether this is still a problem
 ## Fix issue with RStudio and the Nouveau Nvidia driver
 ## https://github.com/rstudio/rstudio/issues/3781
-echo "QT_XCB_FORCE_SOFTWARE_OPENGL=1 /usr/lib/rstudio/bin/rstudio" > ~/bin/rstudio
-chmod +x ~/bin/rstudio
-sudo sed -i 's/\/usr\/lib\/rstudio\/bin\/rstudio/QT_XCB_FORCE_SOFTWARE_OPENGL=1 \/usr\/lib\/rstudio\/bin\/rstudio/' /usr/share/applications/rstudio.desktop
+#echo "QT_XCB_FORCE_SOFTWARE_OPENGL=1 /usr/lib/rstudio/bin/rstudio" > ~/bin/rstudio
+#chmod +x ~/bin/rstudio
+#sudo sed -i 's/\/usr\/lib\/rstudio\/bin\/rstudio/QT_XCB_FORCE_SOFTWARE_OPENGL=1 \/usr\/lib\/rstudio\/bin\/rstudio/' /usr/share/applications/rstudio.desktop
 
 # Eclipse IDE + StatET
 # Follow instructions from 
