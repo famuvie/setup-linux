@@ -465,6 +465,7 @@ sudo find FiraSans-master/ -name "*.ttf" -exec cp {} /usr/share/fonts/truetype/f
 ## Run from the home dir at the back up
 rsync -azv .dotfiles ~
 rsync -azv .ssh ~
+rsync -azv .unison ~
 rsync -azv .thunderbird ~
 rsync -azv .mozilla/firefox/ ~/.mozilla/firefox
 rsync -azv .config/rstudio/ ~/.config/rstudio
