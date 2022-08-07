@@ -412,6 +412,11 @@ sudo mkdir -p /usr/share/fonts/truetype/fira
 sudo find FiraSans-master/ -name "*.otf" -exec cp {} /usr/share/fonts/opentype/fira/ \;
 sudo find FiraSans-master/ -name "*.ttf" -exec cp {} /usr/share/fonts/truetype/fira/ \;
 
+## JetBrains Mono
+## typeface for developers
+## used in RStudio
+## https://www.jetbrains.com/lp/mono/
+sudo aptitude -r install fonts-jetbrains-mono
 
 ################################
 ### Settings and preferences ###
