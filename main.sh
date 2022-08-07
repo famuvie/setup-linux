@@ -111,6 +111,12 @@ sudo apt-get install apt-transport-https ccache csvkit guake gimp gparted htop k
 # sudo snap install pdftk
 # sudo snap install --classic skype
 
+# Mind mapping
+# Replace freemind by Minder (distributed as a flatpak package)
+# Imports from Freemind
+# https://github.com/phase1geo/Minder
+sudo flatpak install Minder
+
 # Hamster time tracker
 # https://github.com/projecthamster/hamster/wiki
 sudo aptitude -r install hamster-time-tracker
