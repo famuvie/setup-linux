@@ -131,6 +131,9 @@ sudo flatpak install telegram
 # Git interface
 sudo flatpak install gitahead
 
+# Mattermost desktop
+sudo flatpak install mattermost
+
 # Hamster time tracker
 # https://github.com/projecthamster/hamster/wiki
 sudo aptitude -r install hamster-time-tracker
