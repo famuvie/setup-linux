@@ -387,8 +387,8 @@ sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/i
 sudo flatpak install zotero
 
 
-## Tomboy
-sudo aptitude -r install tomboy
+## Gnote
+sudo aptitude -r install gnote
 
 #############
 ### Fonts ###
