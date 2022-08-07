@@ -175,7 +175,7 @@ sudo aptitude -r install libudunits2-dev  # units
 sudo aptitude -r install libfontconfig1-dev  # systemfonts
 sudo aptitude -r install libcairo2-dev  # gdtools
 sudo aptitude -r install libxt-dev libgtk2.0-dev  # Cairo
-sudo aptitude -r install libv8-dev libjq-dev libprotobuf-dev protobuf-compiler  # geojsonio
+# sudo aptitude -r install libv8-dev libjq-dev libprotobuf-dev protobuf-compiler  # geojsonio
 
 
 
