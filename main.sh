@@ -106,6 +106,10 @@ fi
 # gnome-do gnome-do-plugins gtg pdfshuffler 
 sudo apt-get install apt-transport-https ccache csvkit guake gimp gparted htop keepass2 unison unison-gtk gftp libssl-dev meld playonlinux virtualbox virtualbox-qt umbrello recode ssh sshfs okular audacity pandoc pandoc-citeproc xdotool xournal ispell xclip git-all timeshift tmux stow zsh
 
+# Gnome-do became really complicated to install under Mint
+# https://www.linuxcapable.com/how-to-install-gnome-41-desktop-on-linux-mint-20/
+# Check for an alternative launcher
+
 # Other precompiled software as snap packages:
 # sudo snap install freemind
 # sudo snap install pdftk
