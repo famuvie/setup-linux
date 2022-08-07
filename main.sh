@@ -112,13 +112,8 @@ sudo apt-get install apt-transport-https ccache csvkit guake gimp gparted htop k
 # sudo snap install --classic skype
 
 # Hamster time tracker
-# The project is undergoing a major restructuration
 # https://github.com/projecthamster/hamster/wiki
-# During 2020 there will be a major upgrade to hamster v3.0
-# For the moment, install from source following the instructions in the site.
-# Once installed, add the applet to the panel:
-# right-click in panel, Applets, Download, refresh database, search hamster and download.
-# Then manage, install and configure.
+sudo aptitude -r install hamster-time-tracker
 
 # Sublime Text
 sudo aptitude install sublime-text
