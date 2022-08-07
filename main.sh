@@ -124,8 +124,9 @@ sudo flatpak install Minder
 # PDF tools
 sudo flatpak install pdfchain
 
-# Skype
+# Messaging
 sudo flatpak install Skype
+sudo flatpak install telegram
 
 
 # Hamster time tracker
@@ -394,6 +395,7 @@ sudo flatpak install zotero
 ## Gnote
 sudo aptitude -r install gnote
 
+
 #############
 ### Fonts ###
 #############
@@ -473,3 +475,9 @@ rsync -azv .config/RStudio/ ~/.config/RStudio
 rsync -azv .config/RStudio/ ~/.config/RStudio
 ## Okular moved the metadata storage
 rsync -azv .kde/share/apps/okular ~/.local/share/
+
+####################
+### Restore Work ###
+####################
+## Run from the home dir at the back up
+rsync -azv Work ~
