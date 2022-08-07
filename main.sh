@@ -462,10 +462,13 @@ sudo find FiraSans-master/ -name "*.ttf" -exec cp {} /usr/share/fonts/truetype/f
 ################
 
 ## Restore from backup
-.dotfiles
-.ssh
-.thunderbird
-.gconf/apps/gnome-do
-.mozilla/firefox
-.rstudio-desktop
-.kde/share/apps/okular
+## Run from the home dir at the back up
+rsync -azv .dotfiles ~
+rsync -azv .ssh ~
+rsync -azv .thunderbird ~
+rsync -azv .mozilla/firefox/ ~/.mozilla/firefox
+rsync -azv .config/rstudio/ ~/.config/rstudio
+rsync -azv .config/RStudio/ ~/.config/RStudio
+rsync -azv .config/RStudio/ ~/.config/RStudio
+## Okular moved the metadata storage
+rsync -azv .kde/share/apps/okular ~/.local/share/
