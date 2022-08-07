@@ -75,8 +75,10 @@ sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $ubunt
 ## sudo bash -c "echo 'deb http://eric.lavar.de/comp/linux/debian/' 'ubuntu/' >> /etc/apt/sources.list.d/freemind-debian.list"
 ## wget -O - http://eric.lavar.de/comp/linux/debian/deb_zorglub_s_bawue_de.pubkey | sudo apt-key add -
 
-sudo aptitude -r install snapd
-sudo snap install freemind
+## Not working with the current Mint version
+## Installation delayed for now.
+# sudo aptitude -r install snapd
+# sudo snap install freemind
 
 ## sublime text (stable)
 ## Now available in repos
@@ -103,9 +105,9 @@ fi
 sudo apt-get install apt-transport-https ccache csvkit guake gnome-do gnome-do-plugins gimp gparted htop keepass2 unison unison-gtk gftp libssl-dev meld playonlinux virtualbox virtualbox-qt umbrello recode ssh sshfs gtg okular audacity pdfshuffler pandoc pandoc-citeproc xdotool xournal ispell xclip git-all timeshift tmux stow zsh
 
 # Other precompiled software as snap packages:
-sudo snap install freemind
-sudo snap install pdftk
-sudo snap install --classic skype
+# sudo snap install freemind
+# sudo snap install pdftk
+# sudo snap install --classic skype
 
 # Hamster time tracker
 # The project is undergoing a major restructuration
