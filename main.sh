@@ -180,7 +180,7 @@ sudo aptitude -r install libxt-dev libgtk2.0-dev  # Cairo
 
 
 # Other precompiled R-packages
-sudo aptitude -ry install ggobi r-cran-rggobi
+sudo aptitude -ry install ggobi # r-cran-rggobi
 
 # RStudio (latest version)
 wget http://www.rstudio.org/download/desktop
