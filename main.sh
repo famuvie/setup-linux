@@ -495,6 +495,8 @@ rsync -azv .local/share/applications/firefox-uveg.desktop ~/.local/share/applica
 ## Mattermost profiles (from manual install to flatpak config location)
 rsync -azv --delete .config/Mattermost ~/.var/app/com.mattermost.Desktop/config
 
+## GitAhead config
+rsync -azv --delete .config/gitahead.com ~/.config
 
 ####################
 ### Restore Work ###
