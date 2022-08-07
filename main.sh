@@ -355,6 +355,7 @@ esac
 dbsuffix=`grep -o dropbox[_\.0-9]*$dbarch.deb index.html | tail -1`
 wget https://linux.dropbox.com/packages/ubuntu/$dbsuffix
 rm index.html
+sudo aptitude -r install libpango1.0-0  # dependency
 sudo dpkg -i dropbox*
 rm dropbox*
 sudo aptitude -r install nemo-dropbox
