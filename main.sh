@@ -117,6 +117,9 @@ sudo apt-get install apt-transport-https ccache csvkit guake gimp gparted htop k
 # https://github.com/phase1geo/Minder
 sudo flatpak install Minder
 
+# PDF tools
+sudo flatpak install pdfchain
+
 # Hamster time tracker
 # https://github.com/projecthamster/hamster/wiki
 sudo aptitude -r install hamster-time-tracker
