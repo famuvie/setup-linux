@@ -478,7 +478,11 @@ rsync -azv --delete .config/copyq/ ~/.config/copyq
 #	sudo bash -c 'sed "s/= epstopdf/= bash epstopdf/" /usr/share/rubber/rules.ini.bak > /usr/share/rubber/rules.ini'
 #	Seems solved now
 
+########################
+### Cinnamon Applets ###
+########################
 
+# Install pomodoro timer
 
 ################
 ### Dotfiles ###
