@@ -85,6 +85,9 @@ sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $ubunt
 ## wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
 ## echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
 
+## ulauncher
+sudo add-apt-repository ppa:agornostal/ulauncher
+
 # Update repository information
 sudo apt-get update
 
@@ -109,6 +112,11 @@ sudo apt-get install apt-transport-https ccache csvkit guake gimp gparted htop k
 # Gnome-do became really complicated to install under Mint
 # https://www.linuxcapable.com/how-to-install-gnome-41-desktop-on-linux-mint-20/
 # Check for an alternative launcher
+# ulauncher looks good https://ulauncher.io/
+
+sudo apt install ulauncher
+
+
 
 # Other precompiled software as snap packages:
 # sudo snap install freemind
