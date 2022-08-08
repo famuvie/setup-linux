@@ -113,9 +113,10 @@ sudo apt-get install apt-transport-https ccache csvkit guake gimp gparted htop k
 # https://www.linuxcapable.com/how-to-install-gnome-41-desktop-on-linux-mint-20/
 # Check for an alternative launcher
 # ulauncher looks good https://ulauncher.io/
-
 sudo apt install ulauncher
 
+# Clipboard manager
+sudo aptitude -r install copyq
 
 
 # Other precompiled software as snap packages:
@@ -465,6 +466,8 @@ sudo aptitude -r install fonts-jetbrains-mono
 #	</entry>
 # Unnecessary now
 
+## CopyQ
+rsync -azv --delete .config/copyq/ ~/.config/copyq
 
 
 ### Bug corrections and workarounds ###
