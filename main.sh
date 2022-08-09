@@ -416,10 +416,13 @@ sudo apt install ./keybase_amd64.deb
 rm keybase_amd64.deb
 
 
-## Mega Sync
+## Mega Sync with nemo extension
 curl --remote-name https://mega.nz/linux/repo/xUbuntu_22.04/amd64/megasync-xUbuntu_22.04_amd64.deb
 sudo apt install ./megasync-xUbuntu_22.04_amd64.deb
 rm megasync-xUbuntu_22.04_amd64.deb
+curl --remote-name https://mega.nz/linux/repo/xUbuntu_20.04/amd64/nemo-megasync-xUbuntu_20.04_amd64.deb
+sudo apt install ./nemo-megasync-xUbuntu_20.04_amd64.deb
+rm nemo-megasync-xUbuntu_20.04_amd64.deb
 
 
 #############
