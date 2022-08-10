@@ -528,6 +528,9 @@ rsync -azv --delete .config/Mattermost ~/.var/app/com.mattermost.Desktop/config
 ## GitAhead config (from manual install to flatpak config location)
 rsync -azv --delete .config/gitahead.com ~/.var/app/io.github.gitahead.GitAhead/config
 
+## Calibre
+rsync -azv --delete .config/calibre ~/.config
+
 ## Cinnamon config files
 rsync -azv --delete .cinnamon ~
 
