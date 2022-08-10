@@ -202,6 +202,13 @@ sudo aptitude -ry install texlive-full perl-tk
 # Core R, recommended and development packages (for compilation of sources)
 sudo aptitude -ry install r-base r-base-dev r-recommended
 
+# Bridge to the System Package Manager (bspm)
+# https://enchufa2.github.io/bspm/
+sudo add-apt-repository ppa:marutter/rrutter4.0   # R v4.0 and higher
+sudo add-apt-repository ppa:c2d4u.team/c2d4u4.0+  # R packages
+sudo apt-get update && sudo apt-get install python3-{dbus,gi,apt}
+sudo Rscript -e 'install.packages("bspm", repos="https://cran.r-project.org")'
+
 ## Libraries needed for specific packages
 sudo aptitude -r install libudunits2-dev  # units
 sudo aptitude -r install libfontconfig1-dev  # systemfonts
