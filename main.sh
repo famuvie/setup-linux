@@ -513,6 +513,12 @@ rsync -azv --delete .config/copyq/ ~/.config/copyq
 ## Restore from backup
 ## Run from the home dir at the back up
 rsync -azv .dotfiles ~
+cd ~/.dotfiles
+## Make sure the git repository is in clean status
+make  # This will stow all targets and create symlinks
+## Now reset the changed files in the git repository
+cd -  # go back
+
 rsync -azv .ssh ~
 rsync -azv .unison ~
 rsync -azv .thunderbird ~
