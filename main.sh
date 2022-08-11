@@ -547,6 +547,19 @@ rsync -azv --delete .config/calibre ~/.config
 ## Cinnamon config files
 rsync -azv --delete .cinnamon ~
 
+## dconf settings
+## dconf is a binary database of config settings for gnome
+## https://askubuntu.com/questions/22313/what-is-dconf-what-is-its-function-and-how-do-i-use-it
+## How to recover settings from a backed up database:
+## https://unix.stackexchange.com/questions/199836/how-can-i-view-the-content-of-a-backup-of-the-dconf-database-file/199864?newreg=edfd1243cf514ba790c110b131e3ac6c
+cp .config/dconf/user ~/.config/dconf/olduser
+printf %s\\n "user-db:olduser" > ~/db_profile
+DCONF_PROFILE=~/db_profile dconf dump / > ~/old_settings
+## You can now explore settings on the text file and use gsettings to reset some of the keys (e.g. wallpaper)
+grep -A 3 desktop/background ~/old_settings
+gsettings set org.cinnamon.desktop.background picture-uri 'file:///home/facu/Work/personal/img/wallpapers/abstract-technology-background.png'
+
+
 ####################
 ### Restore Work ###
 ####################
