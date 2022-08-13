@@ -431,6 +431,10 @@ curl --remote-name https://mega.nz/linux/repo/xUbuntu_20.04/amd64/nemo-megasync-
 sudo apt install ./nemo-megasync-xUbuntu_20.04_amd64.deb
 rm nemo-megasync-xUbuntu_20.04_amd64.deb
 
+## Docker
+sudo aptitude -r install docker.io
+sudo usermod -aG docker facu  # add user to docker group to run docker without sudo
+
 
 #############
 ### Fonts ###
