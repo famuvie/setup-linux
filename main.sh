@@ -495,6 +495,13 @@ sudo aptitude -r install fonts-jetbrains-mono
 ## CopyQ
 rsync -azv --delete .config/copyq/ ~/.config/copyq
 
+## z script directory jumper
+## https://github.com/rupa/z
+## The dot file is handled with dotfiles
+wget https://github.com/rupa/z/archive/refs/heads/master.zip
+unzip master.zip -d Work/bin
+rm master.zip
+
 
 ### Bug corrections and workarounds ###
 
