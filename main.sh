@@ -542,14 +542,13 @@ rsync -azv .kde/share/apps/okular ~/.local/share/
 
 ## Linux mint web apps
 rsync -azv .local/share/applications/webapp-* ~/.local/share/applications/
-mkdir -p ~/.local/share/ice/firefox 
-rsync -azv --delete .local/share/ice/firefox/* ~/.local/share/ice/firefox/
+rsync -azv --mkpath --delete .local/share/ice/firefox/* ~/.local/share/ice/firefox/
 
 ## Firefox - UVEG
 rsync -azv .local/share/applications/firefox-uveg.desktop ~/.local/share/applications/
 
 ## Mattermost profiles (from manual install to flatpak config location)
-rsync -azv --delete .config/Mattermost ~/.var/app/com.mattermost.Desktop/config
+rsync -azv --mkpath --delete .config/Mattermost ~/.var/app/com.mattermost.Desktop/config
 
 ## GitAhead config (from manual install to flatpak config location)
 rsync -azv --delete .config/gitahead.com ~/.var/app/io.github.gitahead.GitAhead/config
