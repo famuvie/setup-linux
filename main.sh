@@ -542,7 +542,9 @@ rsync -azv .kde/share/apps/okular ~/.local/share/
 
 ## Linux mint web apps
 rsync -azv .local/share/applications/webapp-* ~/.local/share/applications/
+mkdir -p ~/.local/share/ice/firefox 
 rsync -azv --delete .local/share/ice/firefox/* ~/.local/share/ice/firefox/
+
 ## Firefox - UVEG
 rsync -azv .local/share/applications/firefox-uveg.desktop ~/.local/share/applications/
 
