@@ -245,6 +245,12 @@ rm $rsfname
 #chmod +x ~/bin/rstudio
 #sudo sed -i 's/\/usr\/lib\/rstudio\/bin\/rstudio/QT_XCB_FORCE_SOFTWARE_OPENGL=1 \/usr\/lib\/rstudio\/bin\/rstudio/' /usr/share/applications/rstudio.desktop
 
+# Quarto (latest version)
+# I could not scrape the filename for the latest version
+# It is computed with JavaScript at rendering time.
+wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.0.38/quarto-1.0.38-linux-amd64.deb
+sudo gdebi -n *.deb
+
 # Eclipse IDE + StatET
 # Follow instructions from 
 # http://www.stanford.edu/~messing/ComputationalSocialScienceWorkflow.html
