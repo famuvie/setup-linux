@@ -143,6 +143,9 @@ sudo flatpak install gitahead
 # Mattermost desktop
 sudo flatpak install mattermost
 
+# VSCodium
+sudo flatpak install VSCodium
+
 # Hamster time tracker
 # https://github.com/projecthamster/hamster/wiki
 sudo aptitude -r install hamster-time-tracker
