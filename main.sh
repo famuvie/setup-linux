@@ -421,6 +421,16 @@ sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/i
 ## Config the data-directory to point to ~/Work/logistica/Zotero
 sudo flatpak install zotero
 
+## Better BibTex for Zotero extension
+## https://retorque.re/zotero-better-bibtex/installation/
+wget https://github.com/retorquere/zotero-better-bibtex/releases/latest
+bbtfile=`grep -m 1 -o 'zotero[-a-z0-9\.]*xpi' latest`
+vnumber=`echo $bbtfile | grep -o -P '[\d\.]*(?=\.)'`
+rm latest
+wget https://github.com/retorquere/zotero-better-bibtex/releases/download/v$vnumber/$bbtfile
+## Manually install the extension from Zotero
+## Tools > Add-ons > Extensions > Gear (top-right) > Install Add-on From File... Choose downloaded .xpi and install.
+## Close Zotero and remove file.
 
 ## Gnote
 sudo aptitude -r install gnote
