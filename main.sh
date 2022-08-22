@@ -432,6 +432,13 @@ wget https://github.com/retorquere/zotero-better-bibtex/releases/download/v$vnum
 ## Tools > Add-ons > Extensions > Gear (top-right) > Install Add-on From File... Choose downloaded .xpi and install.
 ## Close Zotero and remove file.
 
+
+## MS Teams
+sudo flatpak install microsoft.teams
+
+## OnlyOffice
+sudo flatpak install onlyoffice
+
 ## Gnote
 sudo aptitude -r install gnote
 
