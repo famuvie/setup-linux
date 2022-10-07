@@ -35,8 +35,12 @@ fi
 # sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
 
 # R-project
-sudo bash -c "echo 'deb http://cloud.r-project.org/bin/linux/ubuntu' $ubuntu_codename'-cran35/' > /etc/apt/sources.list.d/cran-r-ppa-$ubuntu_codename.list"
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+## add the signing key (by Michael Rutter) for these repos
+## To verify key, run gpg --show-keys /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc 
+## Fingerprint: E298A3A825C0D65DFD57CBB651716619E084DAB9
+wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+## add the R 4.0 repo from CRAN -- adjust 'focal' to 'groovy' or 'bionic' as needed
+sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $ubuntu_codename-cran40/"
 
 ## Oracle (Sun) Java (JRE and JDK)
 ## It's a Gephi (and a common) dependency
@@ -71,13 +75,18 @@ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD
 ## sudo bash -c "echo 'deb http://eric.lavar.de/comp/linux/debian/' 'ubuntu/' >> /etc/apt/sources.list.d/freemind-debian.list"
 ## wget -O - http://eric.lavar.de/comp/linux/debian/deb_zorglub_s_bawue_de.pubkey | sudo apt-key add -
 
-sudo aptitude -r install snapd
-sudo snap install freemind
+## Not working with the current Mint version
+## Installation delayed for now.
+# sudo aptitude -r install snapd
+# sudo snap install freemind
 
 ## sublime text (stable)
 ## Now available in repos
 ## wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
 ## echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+
+## ulauncher
+sudo add-apt-repository ppa:agornostal/ulauncher
 
 # Update repository information
 sudo apt-get update
@@ -96,24 +105,53 @@ fi
 # Warning unattended installation of all these with aptitude broke my cinnamon installation (some incompatibility in dependencies)
 # However, it seems not to happen with apt-get, so it looks safer for the moment.
 # As an alternative, it might be useful to use aptitude-robot
-sudo apt-get install apt-transport-https ccache csvkit guake gnome-do gnome-do-plugins gimp gparted htop keepass2 unison unison-gtk gftp libssl-dev meld playonlinux virtualbox virtualbox-qt umbrello recode ssh sshfs gtg okular audacity pdfshuffler pandoc pandoc-citeproc xdotool xournal ispell xclip git-all timeshift tmux stow zsh
+# packages no longer available:
+# gnome-do gnome-do-plugins gtg pdfshuffler 
+sudo apt-get install apt-transport-https ccache csvkit guake gimp gparted htop keepass2 unison unison-gtk gftp libssl-dev meld playonlinux virtualbox virtualbox-qt umbrello recode ssh sshfs okular audacity pandoc pandoc-citeproc xdotool xournal ispell xclip git-all timeshift tmux stow zsh
+
+# Gnome-do became really complicated to install under Mint
+# https://www.linuxcapable.com/how-to-install-gnome-41-desktop-on-linux-mint-20/
+# Check for an alternative launcher
+# ulauncher looks good https://ulauncher.io/
+sudo apt install ulauncher
+
+# Clipboard manager
+sudo aptitude -r install copyq
+
 
 ## MS fonts
 sudo aptitude -r install ttf-mscorefonts-installer
 
 # Other precompiled software as snap packages:
-sudo snap install freemind
-sudo snap install pdftk
-sudo snap install --classic skype
+# sudo snap install freemind
+# sudo snap install pdftk
+# sudo snap install --classic skype
+
+# Mind mapping
+# Replace freemind by Minder (distributed as a flatpak package)
+# Imports from Freemind
+# https://github.com/phase1geo/Minder
+sudo flatpak install Minder
+
+# PDF tools
+sudo flatpak install pdfchain
+
+# Messaging
+sudo flatpak install Skype
+sudo flatpak install telegram
+
+# Git interface
+sudo flatpak install gitahead
+
+# Mattermost desktop
+sudo flatpak install mattermost
+
+# VSCodium
+sudo flatpak install VSCodium
 
 # Hamster time tracker
-# The project is undergoing a major restructuration
 # https://github.com/projecthamster/hamster/wiki
-# During 2020 there will be a major upgrade to hamster v3.0
-# For the moment, install from source following the instructions in the site.
-# Once installed, add the applet to the panel:
-# right-click in panel, Applets, Download, refresh database, search hamster and download.
-# Then manage, install and configure.
+sudo aptitude -r install hamster-time-tracker
 
 # Sublime Text
 sudo aptitude install sublime-text
@@ -170,21 +208,28 @@ sudo aptitude -ry install texlive-full perl-tk
 # Core R, recommended and development packages (for compilation of sources)
 sudo aptitude -ry install r-base r-base-dev r-recommended
 
+# Bridge to the System Package Manager (bspm)
+# https://enchufa2.github.io/bspm/
+sudo add-apt-repository ppa:marutter/rrutter4.0   # R v4.0 and higher
+sudo add-apt-repository ppa:c2d4u.team/c2d4u4.0+  # R packages
+sudo apt-get update && sudo apt-get install python3-{dbus,gi,apt}
+sudo Rscript -e 'install.packages("bspm", repos="https://cran.r-project.org")'
+
 ## Libraries needed for specific packages
 sudo aptitude -r install libudunits2-dev  # units
 sudo aptitude -r install libfontconfig1-dev  # systemfonts
 sudo aptitude -r install libcairo2-dev  # gdtools
 sudo aptitude -r install libxt-dev libgtk2.0-dev  # Cairo
-sudo aptitude -r install libv8-dev libjq-dev libprotobuf-dev protobuf-compiler  # geojsonio
+# sudo aptitude -r install libv8-dev libjq-dev libprotobuf-dev protobuf-compiler  # geojsonio
 
 
 
 # Other precompiled R-packages
-sudo aptitude -ry install ggobi r-cran-rggobi
+sudo aptitude -ry install ggobi # r-cran-rggobi
 
 # RStudio (latest version)
 wget http://www.rstudio.org/download/desktop
-rsversion=`grep "RStudio Desktop" desktop | grep -m 1 -o '[[:digit:]][.][[:digit:]+][.][[:digit:]][[:digit:]][[:digit:]]*' | head -n 1`
+rsversion=`grep -Eo -m1 '[[:digit:]]{4}\\.[[:digit:]]{2}\\.[[:digit:]]+-[[:digit:]]+' desktop`
 rm desktop
 case $arch in
 	i386)
@@ -194,16 +239,23 @@ case $arch in
 esac
 
 
-rsfname=$ubuntu_codename/rstudio-$rsversion-$rsarch.deb
-wget https://download1.rstudio.org/desktop/$rsfname
+rsfname=rstudio-$rsversion-$rsarch.deb
+wget https://download1.rstudio.org/desktop/$ubuntu_codename/$rsarch/$rsfname
 sudo gdebi -n $rsfname
 rm $rsfname
 
+## Check whether this is still a problem
 ## Fix issue with RStudio and the Nouveau Nvidia driver
 ## https://github.com/rstudio/rstudio/issues/3781
-echo "QT_XCB_FORCE_SOFTWARE_OPENGL=1 /usr/lib/rstudio/bin/rstudio" > ~/bin/rstudio
-chmod +x ~/bin/rstudio
-sudo sed -i 's/\/usr\/lib\/rstudio\/bin\/rstudio/QT_XCB_FORCE_SOFTWARE_OPENGL=1 \/usr\/lib\/rstudio\/bin\/rstudio/' /usr/share/applications/rstudio.desktop
+#echo "QT_XCB_FORCE_SOFTWARE_OPENGL=1 /usr/lib/rstudio/bin/rstudio" > ~/bin/rstudio
+#chmod +x ~/bin/rstudio
+#sudo sed -i 's/\/usr\/lib\/rstudio\/bin\/rstudio/QT_XCB_FORCE_SOFTWARE_OPENGL=1 \/usr\/lib\/rstudio\/bin\/rstudio/' /usr/share/applications/rstudio.desktop
+
+# Quarto (latest version)
+# I could not scrape the filename for the latest version
+# It is computed with JavaScript at rendering time.
+wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.0.38/quarto-1.0.38-linux-amd64.deb
+sudo gdebi -n *.deb
 
 # Eclipse IDE + StatET
 # Follow instructions from 
@@ -354,6 +406,7 @@ esac
 dbsuffix=`grep -o dropbox[_\.0-9]*$dbarch.deb index.html | tail -1`
 wget https://linux.dropbox.com/packages/ubuntu/$dbsuffix
 rm index.html
+sudo aptitude -r install libpango1.0-0  # dependency
 sudo dpkg -i dropbox*
 rm dropbox*
 sudo aptitude -r install nemo-dropbox
@@ -369,8 +422,18 @@ sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/i
 
 ## Zotero
 ## Config the data-directory to point to ~/Work/logistica/Zotero
-sudo snap install zotero-snap
+sudo flatpak install zotero
 
+## Better BibTex for Zotero extension
+## https://retorque.re/zotero-better-bibtex/installation/
+wget https://github.com/retorquere/zotero-better-bibtex/releases/latest
+bbtfile=`grep -m 1 -o 'zotero[-a-z0-9\.]*xpi' latest`
+vnumber=`echo $bbtfile | grep -o -P '[\d\.]*(?=\.)'`
+rm latest
+wget https://github.com/retorquere/zotero-better-bibtex/releases/download/v$vnumber/$bbtfile
+## Manually install the extension from Zotero
+## Tools > Add-ons > Extensions > Gear (top-right) > Install Add-on From File... Choose downloaded .xpi and install.
+## Close Zotero and remove file.
 
 ## Tomboy > Using GNote nowadays
 ## sudo aptitude -r install tomboy
@@ -417,6 +480,34 @@ docker run -it --rm \  # install the wrapper scripts
   --volume /usr/local/bin:/target \
   mdouchement/zoom-us:latest install
 
+## MS Teams
+sudo flatpak install microsoft.teams
+
+## OnlyOffice
+sudo flatpak install onlyoffice
+
+## Gnote
+sudo aptitude -r install gnote
+
+
+## Keybase
+curl --remote-name https://prerelease.keybase.io/keybase_amd64.deb
+sudo apt install ./keybase_amd64.deb
+rm keybase_amd64.deb
+
+
+## Mega Sync with nemo extension
+curl --remote-name https://mega.nz/linux/repo/xUbuntu_22.04/amd64/megasync-xUbuntu_22.04_amd64.deb
+sudo apt install ./megasync-xUbuntu_22.04_amd64.deb
+rm megasync-xUbuntu_22.04_amd64.deb
+curl --remote-name https://mega.nz/linux/repo/xUbuntu_20.04/amd64/nemo-megasync-xUbuntu_20.04_amd64.deb
+sudo apt install ./nemo-megasync-xUbuntu_20.04_amd64.deb
+rm nemo-megasync-xUbuntu_20.04_amd64.deb
+
+## Docker
+sudo aptitude -r install docker.io
+sudo usermod -aG docker facu  # add user to docker group to run docker without sudo
+
 
 #############
 ### Fonts ###
@@ -434,6 +525,11 @@ sudo mkdir -p /usr/share/fonts/truetype/fira
 sudo find FiraSans-master/ -name "*.otf" -exec cp {} /usr/share/fonts/opentype/fira/ \;
 sudo find FiraSans-master/ -name "*.ttf" -exec cp {} /usr/share/fonts/truetype/fira/ \;
 
+## JetBrains Mono
+## typeface for developers
+## used in RStudio
+## https://www.jetbrains.com/lp/mono/
+sudo aptitude -r install fonts-jetbrains-mono
 
 ################################
 ### Settings and preferences ###
@@ -469,10 +565,16 @@ sudo find FiraSans-master/ -name "*.ttf" -exec cp {} /usr/share/fonts/truetype/f
 #	</entry>
 # Unnecessary now
 
-# Try Ulauncher as an alternative to Gnome-do
-# sudo add-apt-repository ppa:agornostal/ulauncher
-# sudo apt update
-# sudo apt install ulauncher
+## CopyQ
+rsync -azv --delete .config/copyq/ ~/.config/copyq
+
+## z script directory jumper
+## https://github.com/rupa/z
+## The dot file is handled with dotfiles
+wget https://github.com/rupa/z/archive/refs/heads/master.zip
+unzip master.zip -d Work/bin
+rm master.zip
+
 
 ### Bug corrections and workarounds ###
 
@@ -482,20 +584,30 @@ sudo find FiraSans-master/ -name "*.ttf" -exec cp {} /usr/share/fonts/truetype/f
 #	sudo bash -c 'sed "s/= epstopdf/= bash epstopdf/" /usr/share/rubber/rules.ini.bak > /usr/share/rubber/rules.ini'
 #	Seems solved now
 
+########################
+### Cinnamon Applets ###
+########################
 
+# Install pomodoro timer
 
 ################
 ### Dotfiles ###
 ################
 
-## Restore from backup
-.dotfiles
-.ssh
-.thunderbird
-.gconf/apps/gnome-do
-.mozilla/firefox
-.rstudio-desktop
-.kde/share/apps/okular
+# Getting Things Gnome
+# Set up bind mounts by appending the lines below into /etc/fstab
+### Getting Things Gnome config files
+#/home/facu/Work/logistica/gtg /home/facu/.var/app/org.gnome.GTG/data/gtg none bind,rw
+#/home/facu/Work/logistica/gtg /home/facu/.var/app/org.gnome.GTG/config/gtg none bind,rw
+
+
+######################
+### Manual install ###
+######################
+
+# gephi
+# radian  # https://github.com/randy3k/radian
+# UHK Agent
 
 
 #################
@@ -507,11 +619,59 @@ ln -s ~/.dotfiles/binlinks/bin/newprj.sh
 ln -s ~/.dotfiles/binlinks/bin/tldr
 
 
-######################
-### Manual install ###
-######################
+## Run from the home dir at the back up
+rsync -azv .dotfiles ~
+cd ~/.dotfiles
+## Make sure the git repository is in clean status
+make  # This will stow all targets and create symlinks
+## Now reset the changed files in the git repository
+cd -  # go back
 
-# gephi
-# GitAhead
-# radian  # https://github.com/randy3k/radian
-# UHK Agent
+rsync -azv .ssh ~
+rsync -azv .unison ~
+rsync -azv .thunderbird ~
+rsync -azv .mozilla/firefox/ ~/.mozilla/firefox
+rsync -azv .config/rstudio/ ~/.config/rstudio
+rsync -azv .config/RStudio/ ~/.config/RStudio
+rsync -azv .config/RStudio/ ~/.config/RStudio
+## Okular moved the metadata storage
+rsync -azv .kde/share/apps/okular ~/.local/share/
+
+## Linux mint web apps
+rsync -azv .local/share/applications/webapp-* ~/.local/share/applications/
+rsync -azv --mkpath --delete .local/share/ice/firefox/* ~/.local/share/ice/firefox/
+
+## Firefox - UVEG
+rsync -azv .local/share/applications/firefox-uveg.desktop ~/.local/share/applications/
+
+## Mattermost profiles (from manual install to flatpak config location)
+rsync -azv --mkpath --delete .config/Mattermost ~/.var/app/com.mattermost.Desktop/config
+
+## GitAhead config (from manual install to flatpak config location)
+rsync -azv --delete .config/gitahead.com ~/.var/app/io.github.gitahead.GitAhead/config
+
+## Calibre
+rsync -azv --delete .config/calibre ~/.config
+
+## Cinnamon config files
+rsync -azv --delete .cinnamon ~
+
+## dconf settings
+## dconf is a binary database of config settings for gnome
+## https://askubuntu.com/questions/22313/what-is-dconf-what-is-its-function-and-how-do-i-use-it
+## How to recover settings from a backed up database:
+## https://unix.stackexchange.com/questions/199836/how-can-i-view-the-content-of-a-backup-of-the-dconf-database-file/199864?newreg=edfd1243cf514ba790c110b131e3ac6c
+cp .config/dconf/user ~/.config/dconf/olduser
+printf %s\\n "user-db:olduser" > ~/db_profile
+DCONF_PROFILE=~/db_profile dconf dump / > ~/old_settings
+## You can now explore settings on the text file and use gsettings to reset some of the keys (e.g. wallpaper)
+grep -A 3 desktop/background ~/old_settings
+gsettings set org.cinnamon.desktop.background picture-uri 'file:///home/facu/Work/personal/img/wallpapers/abstract-technology-background.png'
+
+
+####################
+### Restore Work ###
+####################
+## Run from the home dir at the back up
+rsync -azv Work ~
+
