@@ -372,8 +372,51 @@ sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/i
 sudo snap install zotero-snap
 
 
-## Tomboy
-sudo aptitude -r install tomboy
+## Tomboy > Using GNote nowadays
+## sudo aptitude -r install tomboy
+
+
+### More things
+
+# copyq clipboard manager
+sudo aptitude -r install copyq 
+
+# athens knowledge base (for reading notes)
+# It's an Appimage file within work/bin, and the data are in work/logistica/notes_athens (backed up)
+
+# pomodoro Applet
+# Linux Mint applet (search and install)
+
+# Mattermost desktop
+# https://docs.mattermost.com/install/desktop-app-install.html#ubuntu-and-debian-based-systems
+
+# Typora
+# https://typora.io/
+# wget -qO - https://typora.io/linux/public-key.asc | sudo apt-key add -
+# sudo add-apt-repository 'deb https://typora.io/linux ./'
+# sudo apt-get update
+# sudo apt-get install typora
+
+
+# Mega sync
+
+# OBS Studio
+
+# MS Teams
+
+# CopyQ clipboard manager
+# Configure to ignore text copied from KeePass
+# https://copyq.readthedocs.io/en/latest/faq.html#faq-ignore-password-manager
+sudo aptitude -r install copyq 
+
+# zoom-us-wrapper
+# https://github.com/mdouchement/docker-zoom-us
+# Run with: zoom-us-wrapper zoom at the command line
+docker pull mdouchement/zoom-us:latest  # pull docker image from dockerhub
+docker run -it --rm \  # install the wrapper scripts
+  --volume /usr/local/bin:/target \
+  mdouchement/zoom-us:latest install
+
 
 #############
 ### Fonts ###
@@ -426,7 +469,10 @@ sudo find FiraSans-master/ -name "*.ttf" -exec cp {} /usr/share/fonts/truetype/f
 #	</entry>
 # Unnecessary now
 
-
+# Try Ulauncher as an alternative to Gnome-do
+# sudo add-apt-repository ppa:agornostal/ulauncher
+# sudo apt update
+# sudo apt install ulauncher
 
 ### Bug corrections and workarounds ###
 
@@ -450,3 +496,22 @@ sudo find FiraSans-master/ -name "*.ttf" -exec cp {} /usr/share/fonts/truetype/f
 .mozilla/firefox
 .rstudio-desktop
 .kde/share/apps/okular
+
+
+#################
+### Bin links ###
+#################
+
+cd ~/bin
+ln -s ~/.dotfiles/binlinks/bin/newprj.sh
+ln -s ~/.dotfiles/binlinks/bin/tldr
+
+
+######################
+### Manual install ###
+######################
+
+# gephi
+# GitAhead
+# radian  # https://github.com/randy3k/radian
+# UHK Agent

@@ -27,7 +27,6 @@ It also focus on some spatial/geographical software (GIS, GDAL, PROJ4, etc.).
 
 
 *Repositories*
-  * Bazaar Version Control System (VCS)
   * LibreOffice (default in Mint)
   * Ubuntugis (unstable repo)
   * R-project
