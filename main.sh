@@ -507,6 +507,8 @@ rsync -azv .config/rstudio/ ~/.config/rstudio
 rsync -azv .config/RStudio/ ~/.config/RStudio
 rsync -azv .config/RStudio/ ~/.config/RStudio
 rsync -azv .local/share/okular ~/.local/share/
+rsync -azv .local/share/ulauncher ~/.local/share/
+rsync -azv .config/ulauncher ~/.config
 
 ## Linux mint web apps
 rsync -azv .local/share/applications/webapp-* ~/.local/share/applications/
