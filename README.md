@@ -5,14 +5,11 @@ Sets repositories up, installs packages and plugins, and configures several thin
 
 ## How to use
 
-If you use MS Windows, don't.
-
 This is a bash script.
 Download and write in a terminal:
 sh ./main.sh
 
-Even better: go through the script step by step. 
-Some commands might fail due to different system settings, or changes in software packages or repositories.
+But this is likely to fail at some point because things evolve fast. Better go through the script step by step. 
 
 You can comment out the features you don't want installed.
 You can also set executable permissions in order to run the script by double-clicking on it.
@@ -34,12 +31,20 @@ It also focus on some spatial/geographical software (GIS, GDAL, PROJ4, etc.).
 *Software*
   * Core R, with recommended and development packages
   * Rstudio
-  * Bazaar VCS (with bazaar explorer, and Subversion interface)
+  * git
+  * GitAhead
+  * docker
   * GDAL and PROJ4 (geospatial libraries)
+  * Zotero
+  * quarto
+  * GNote
+  * Mattermost, MS Teams, Zoom (dockerised)
+  * keepass
+  * MEGA Sync, Dropbox, keybase
+  * OnlyOffice
 
 *Plugins*
-  * gedit: plugins; developer-plugins; latex-plugin; r-plugin
+  * Better BibTex for Zotero
 
 *Settings*
-  * Activate gedit's most interesting plugins
-  * Set up some useful gedit preferences
+  * Mozilla Fira fonts, JetBrains mono

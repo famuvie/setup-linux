@@ -149,6 +149,10 @@ sudo flatpak install mattermost
 # VSCodium
 sudo flatpak install VSCodium
 
+# Getting Things Gnome!
+# https://wiki.gnome.org/Apps/GTG
+sudo flatpak install gtg
+
 # Hamster time tracker
 # https://github.com/projecthamster/hamster/wiki
 sudo aptitude -r install hamster-time-tracker
@@ -244,125 +248,11 @@ wget https://download1.rstudio.org/desktop/$ubuntu_codename/$rsarch/$rsfname
 sudo gdebi -n $rsfname
 rm $rsfname
 
-## Check whether this is still a problem
-## Fix issue with RStudio and the Nouveau Nvidia driver
-## https://github.com/rstudio/rstudio/issues/3781
-#echo "QT_XCB_FORCE_SOFTWARE_OPENGL=1 /usr/lib/rstudio/bin/rstudio" > ~/bin/rstudio
-#chmod +x ~/bin/rstudio
-#sudo sed -i 's/\/usr\/lib\/rstudio\/bin\/rstudio/QT_XCB_FORCE_SOFTWARE_OPENGL=1 \/usr\/lib\/rstudio\/bin\/rstudio/' /usr/share/applications/rstudio.desktop
-
 # Quarto (latest version)
 # I could not scrape the filename for the latest version
 # It is computed with JavaScript at rendering time.
 wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.0.38/quarto-1.0.38-linux-amd64.deb
 sudo gdebi -n *.deb
-
-# Eclipse IDE + StatET
-# Follow instructions from 
-# http://www.stanford.edu/~messing/ComputationalSocialScienceWorkflow.html
-# Download the CDT version of Eclipse (with tools for C/C++)
-# wget http://www.eclipse.org/downloads/
-# eclipsemirror=`grep -m 1 -o www.*.cpp*tar.gz index.html`
-# wget $eclipsemirror'&mirror_id=514'
-# wget `grep -m 1 -o 'http.*tar.gz' download*`
-# mv eclipse* ~/bin
-# tar -xf ~/bin/eclipse*
-# mv ~/bin/eclipse ~/bin/Eclipse
-# ln -s ~/bin/Eclipse/eclipse ~/bin/eclipse
-# # Until 2012 Eclipse needed the java 6 version from Sun
-# # sudo aptitude -ry install sun-java6-jre sun-java6-jdk
-# # From 2013, Sun java if Oracle's java with a more restricted license
-# # so it can't be installed from repos. However, Eclipse seems too
-# # work fine with Open Java 7, now.
-# sudo aptitude -ry install default-jdk
-# # StatET
-# # Install manually from within Eclipse:
-# # http://www.walware.de/goto/statet
-# sudo R CMD javareconf
-
-
-# Mint replaced gedit by xed as the default text editor
-# I could reinstall gedit, but I'm not using it so often as before
-# I will rely on Sublime Text/Atom as powerful text editors
-# and keep xed or whatever as is.
-# # gedit plugins
-# # sudo aptitude -ry install gedit-developer-plugins gedit-plugins
-#   # watch out! the latex plugin installs LaTeX!!
-#   # We should install it beforehand (it does it anyway)
-#   # It also installs Bazaar.
-#   # gedit-developer-plugins requires gedit >= 3.2.0
-#   # installing from source gave problems with libgedit.private.so.0 library not found
-#   # Do not auto-accept the first solution, which is not installing developer plugins
-#   # and take the second option, which is upgrading gedit
-#   sudo aptitude install gedit-developer-plugins
-
-# # gedit-latex-plugin
-# # In ubuntu 11.10 repos there is a version that works only with gedit-2.x
-# # but Oneiric ships gedit-3.x. Need to install from
-# #https://launchpad.net/ubuntu/oneiric/i386/gedit-latex-plugin/3.3.1-1~oneiric1
-# #wget http://launchpadlibrarian.net/83566981/gedit-latex-plugin_3.3.1-1~oneiric1_all.deb
-# #sudo gdebi -n gedit-latex-plugin_3.3.1-1~oneiric1_all.deb
-# #rm gedit-latex-plugin_3.3.1-1~oneiric1_all.deb
-# # This is solved now
-
-# # This plugin depends on rubber who in turn depends on texlive
-# # It doesn't know that I have already installed TeX Live and
-# # wants to install the outdated version from de repos.
-# # Solution is to build a dummy package to cheat him
-# # Source: http://blogs.ethz.ch/ubuntu/2011/03/14/tex-live-2010-installation/
-# sudo apt-get install equivs
-# mkdir tl-equivs && cp texlive-local tl-equivs && cd tl-equivs
-# equivs-build texlive-local
-# sudo dpkg -i texlive-local_2013-1~1_all.deb
-# cd .. && rm -r tl-equivs
-# # Finally:
-# sudo aptitude install gedit-latex-plugin
-
-# # A workaround the latex-plugin who does not find texmf.cnf
-# sudo ln -sf `kpsewhich -var-value TEXMFMAIN`/web2c/texmf.cnf /etc/texmf/texmf.cnf
-
-
-# gedit-r-plugin
-# Not maintaned any more.
-# in ubuntu 11.10 repositories there is a Gtk2 outdated version
-# that don't work well, because 11.10 works with Gtk3.
-# We need to install it from the website.
-# wget http://sourceforge.net/projects/rgedit/files/latest/download?source=files -O tmp_rgedit.tar.gz
-#  # After installing the previous plugins this should be unnecessary (It is)
-# mkdir -p ~/.local/share/gedit/plugins/
-# tar -C ~/.local/share/gedit/plugins -xf tmp_rgedit.tar.gz
-# rm tmp_rgedit.tar.gz
-# All this is solved now
-# (although the repos don't necessarily have the very latest version)
-# sudo aptitude -ry install gedit-r-plugin
-
-# Activate interesting plugins:
-# - R integration (RCtrl)
-# - Cambiar capitalización (changecase)
-# - Comentar código (codecomment)
-# - Completado de palabras (wordcompletion)
-# - Completar paréntesis (bracketcompletion)
-# - Herramientas externas (externaltools)
-# - Multedición (multiedit)
-# - SyncTeX (synctex)
-# - Tamaño del texto (textsize)
-# - Terminal empotrado (terminal)
-
-# In Gnome 2.x I do it automatically editting
-# .gconf/apps/gedit-2/plugins/%gconf.xml
-# and using gconftool-2 as a CLI
-#gconftool-2 --set /apps/gedit-2/plugins/active-plugins [latex,changecase,filebrowser,docinfo,wordcompletion,time,terminal,externaltools,multiedit,modelines,bracketcompletion,synctex,codecomment,spell,textsize,RCtrl] --type=list --list-type=string
-
-# # In Gnome 3.x the CLI is gsettings:
-# gsettings set org.gnome.gedit.plugins active-plugins "['latex', 'changecase', 'filebrowser', 'docinfo', 'wordcompletion', 'time', 'terminal', 'externaltools', 'multiedit', 'modelines', 'bracketcompletion', 'synctex', 'codecomment', 'spell', 'textsize', 'RCtrl']"
-
-# # gedit preferences
-#     # ancho del tabulador: 2
-#     # usar espacios en lugar de tabuladores (seguro?)
-#     # activar sangría automática
-# gsettings set org.gnome.gedit.preferences.editor tabs-size 2
-# gsettings set org.gnome.gedit.preferences.editor insert-spaces true
-# gsettings set org.gnome.gedit.preferences.editor auto-indent true
 
 
 # Geographical libraries GDAL and Proj4
@@ -383,15 +273,6 @@ tar -C ~/bin -xf gephi-*
 rm gephi-*
 # TODO: put shortcut in Gnome menus
 
-
-# Kompozer: web authoring
-# TODO: infer automatically the latest release
-#wget kompozer.net
-#grep -o http.*download index.html
-##wget http://sourceforge.net/projects/kompozer/files/current/0.8b3/linux-i686/kompozer-0.8b3.es-ES.gcc4.2-i686.tar.gz/download
-#wget http://archive.ubuntu.com/ubuntu/pool/universe/k/kompozer/kompozer_0.8~b3.dfsg.1-0.1ubuntu2_i386.deb http://archive.ubuntu.com/ubuntu/pool/universe/k/kompozer/kompozer-data_0.8~b3.dfsg.1-0.1ubuntu2_all.deb
-#sudo dpkg -i kompozer*.deb
-#rm kompozer*.deb
 
 # Dropbox
 # Latest version
@@ -435,23 +316,17 @@ wget https://github.com/retorquere/zotero-better-bibtex/releases/download/v$vnum
 ## Tools > Add-ons > Extensions > Gear (top-right) > Install Add-on From File... Choose downloaded .xpi and install.
 ## Close Zotero and remove file.
 
-## Tomboy > Using GNote nowadays
-## sudo aptitude -r install tomboy
 
 
-### More things
-
-# copyq clipboard manager
-sudo aptitude -r install copyq 
+###########################
+### More specific tools ###
+###########################
 
 # athens knowledge base (for reading notes)
 # It's an Appimage file within work/bin, and the data are in work/logistica/notes_athens (backed up)
 
 # pomodoro Applet
 # Linux Mint applet (search and install)
-
-# Mattermost desktop
-# https://docs.mattermost.com/install/desktop-app-install.html#ubuntu-and-debian-based-systems
 
 # Typora
 # https://typora.io/
@@ -465,23 +340,10 @@ sudo aptitude -r install copyq
 
 # OBS Studio
 
-# MS Teams
-
 # CopyQ clipboard manager
 # Configure to ignore text copied from KeePass
 # https://copyq.readthedocs.io/en/latest/faq.html#faq-ignore-password-manager
 sudo aptitude -r install copyq 
-
-# zoom-us-wrapper
-# https://github.com/mdouchement/docker-zoom-us
-# Run with: zoom-us-wrapper zoom at the command line
-docker pull mdouchement/zoom-us:latest  # pull docker image from dockerhub
-docker run -it --rm \  # install the wrapper scripts
-  --volume /usr/local/bin:/target \
-  mdouchement/zoom-us:latest install
-
-## MS Teams
-sudo flatpak install microsoft.teams
 
 ## OnlyOffice
 sudo flatpak install onlyoffice
@@ -506,7 +368,35 @@ rm nemo-megasync-xUbuntu_20.04_amd64.deb
 
 ## Docker
 sudo aptitude -r install docker.io
-sudo usermod -aG docker facu  # add user to docker group to run docker without sudo
+sudo usermod -aG docker facu  # add user to docker group to run docker without sudo. Login into a new terminal for this to take effect.
+
+# zoom-us-wrapper
+# https://github.com/mdouchement/docker-zoom-us
+# Run with: zoom-us-wrapper zoom at the command line
+docker pull mdouchement/zoom-us:latest  # pull docker image from dockerhub
+docker run -it --rm --volume /usr/local/bin:/target mdouchement/zoom-us:latest install # install the wrapper scripts
+
+## MS Teams
+sudo flatpak install microsoft.teams
+
+
+## z script directory jumper
+## https://github.com/rupa/z
+## The dot file is handled with dotfiles
+wget https://github.com/rupa/z/archive/refs/heads/master.zip
+unzip master.zip -d Work/bin
+rm master.zip
+
+## radian
+sudo aptitude -r install python3-pip
+pip3 install -U radian
+
+
+## UHK Agent
+wget https://github.com/UltimateHackingKeyboard/agent/releases/download/v2.0.1/UHK.Agent-2.0.1-linux-x86_64.AppImage
+mv UHK.Agent-2.0.1-linux-x86_64.AppImage ~/.local/bin
+chmod 774 .local/bin/UHK.Agent-2.0.1-linux-x86_64.AppImage
+## Make a menu shortcut
 
 
 #############
@@ -568,21 +458,8 @@ sudo aptitude -r install fonts-jetbrains-mono
 ## CopyQ
 rsync -azv --delete .config/copyq/ ~/.config/copyq
 
-## z script directory jumper
-## https://github.com/rupa/z
-## The dot file is handled with dotfiles
-wget https://github.com/rupa/z/archive/refs/heads/master.zip
-unzip master.zip -d Work/bin
-rm master.zip
 
 
-### Bug corrections and workarounds ###
-
-#	# rubber and epstopdf
-#	# http://forums.linuxmint.com/viewtopic.php?f=47&t=49701
-#	sudo cp /usr/share/rubber/rules.ini /usr/share/rubber/rules.ini.bak
-#	sudo bash -c 'sed "s/= epstopdf/= bash epstopdf/" /usr/share/rubber/rules.ini.bak > /usr/share/rubber/rules.ini'
-#	Seems solved now
 
 ########################
 ### Cinnamon Applets ###
@@ -599,24 +476,19 @@ rm master.zip
 ### Getting Things Gnome config files
 #/home/facu/Work/logistica/gtg /home/facu/.var/app/org.gnome.GTG/data/gtg none bind,rw
 #/home/facu/Work/logistica/gtg /home/facu/.var/app/org.gnome.GTG/config/gtg none bind,rw
-
+## These get mounted owned by root initially. 
+## Run once the line below to fix permanently.
+# sudo chown -R facu:facu .var/app/org.gnome.GTG
 
 ######################
 ### Manual install ###
 ######################
 
-# gephi
-# radian  # https://github.com/randy3k/radian
-# UHK Agent
 
 
 #################
-### Bin links ###
+### Restoring ###
 #################
-
-cd ~/bin
-ln -s ~/.dotfiles/binlinks/bin/newprj.sh
-ln -s ~/.dotfiles/binlinks/bin/tldr
 
 
 ## Run from the home dir at the back up
@@ -624,7 +496,7 @@ rsync -azv .dotfiles ~
 cd ~/.dotfiles
 ## Make sure the git repository is in clean status
 make  # This will stow all targets and create symlinks
-## Now reset the changed files in the git repository
+git reset --hard # Reset the changed files in the git repository to previous state
 cd -  # go back
 
 rsync -azv .ssh ~
@@ -634,8 +506,7 @@ rsync -azv .mozilla/firefox/ ~/.mozilla/firefox
 rsync -azv .config/rstudio/ ~/.config/rstudio
 rsync -azv .config/RStudio/ ~/.config/RStudio
 rsync -azv .config/RStudio/ ~/.config/RStudio
-## Okular moved the metadata storage
-rsync -azv .kde/share/apps/okular ~/.local/share/
+rsync -azv .local/share/okular ~/.local/share/
 
 ## Linux mint web apps
 rsync -azv .local/share/applications/webapp-* ~/.local/share/applications/
@@ -644,10 +515,10 @@ rsync -azv --mkpath --delete .local/share/ice/firefox/* ~/.local/share/ice/firef
 ## Firefox - UVEG
 rsync -azv .local/share/applications/firefox-uveg.desktop ~/.local/share/applications/
 
-## Mattermost profiles (from manual install to flatpak config location)
-rsync -azv --mkpath --delete .config/Mattermost ~/.var/app/com.mattermost.Desktop/config
+## Mattermost profiles
+rsync -azv --mkpath --delete .var/app/com.mattermost.Desktop ~/.var/app/
 
-## GitAhead config (from manual install to flatpak config location)
+## GitAhead config
 rsync -azv --delete .config/gitahead.com ~/.var/app/io.github.gitahead.GitAhead/config
 
 ## Calibre
