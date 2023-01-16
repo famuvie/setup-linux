@@ -118,6 +118,10 @@ sudo apt install ulauncher
 # Clipboard manager
 sudo aptitude -r install copyq
 
+# Visidata
+# Explore tabular data in the terminal
+# https://jsvine.github.io/intro-to-visidata/
+sudo aptitude -r install visidata
 
 ## MS fonts
 sudo aptitude -r install ttf-mscorefonts-installer
