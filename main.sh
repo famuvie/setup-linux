@@ -316,7 +316,9 @@ wget https://github.com/retorquere/zotero-better-bibtex/releases/download/v$vnum
 ## Tools > Add-ons > Extensions > Gear (top-right) > Install Add-on From File... Choose downloaded .xpi and install.
 ## Close Zotero and remove file.
 
-
+## PubPeer Zotero extension
+wget https://objects.githubusercontent.com/github-production-release-asset-2e65be/192403061/62ee0641-8842-47b0-820b-f88b559e4504?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20221109%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20221109T095427Z&X-Amz-Expires=300&X-Amz-Signature=634fec0fef9bf38500ea0b5efdf3640784930fd5c97a20193f13d8299065dc68&X-Amz-SignedHeaders=host&actor_id=0&key_id=0&repo_id=192403061&response-content-disposition=inline%3B%20filename%3Dzotero-pubpeer-0.0.14.xpi&response-content-type=application%2Fx-xpinstall
+## Manually install the extension from Zotero
 
 ###########################
 ### More specific tools ###
