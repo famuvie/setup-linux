@@ -324,6 +324,8 @@ wget https://github.com/retorquere/zotero-better-bibtex/releases/download/v$vnum
 
 # athens knowledge base (for reading notes)
 # It's an Appimage file within work/bin, and the data are in work/logistica/notes_athens (backed up)
+# This is no longer maintained. Moved to Logseq now.
+sudo flatpak install logseq
 
 # pomodoro Applet
 # Linux Mint applet (search and install)
