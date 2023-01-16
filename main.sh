@@ -336,6 +336,10 @@ wget https://github.com/retorquere/zotero-better-bibtex/releases/download/v$vnum
 # sudo apt-get install typora
 
 
+# Nextcloud
+sudo aptitude -r install nextcloud-desktop
+
+
 # Mega sync
 
 # OBS Studio
