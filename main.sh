@@ -56,11 +56,6 @@ sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $ubunt
 ## sudo add-apt-repository ppa:bit-team/stable
 ## Déjà Dup (system and data backup. Encrypted. Based on duplicity)
 
-## Gephi: Graph Viz interactive visualization
-## I don't want a daily build!
-## Install the latest stable release in the next section
-#sudo add-apt-repository ppa:rockclimb/gephi-daily
-
 ## Getdeb project repo
 ## http://www.getdeb.net/
 ## some packages from here (like freemind)
@@ -265,18 +260,7 @@ sudo aptitude -ry install libgdal-dev libproj-dev
 
 # Gephi: Graph Viz interactive visualization 
 # https://gephi.org/
-# This is the latest release up to date.
-# Moved to GitHub
-# wget https://launchpad.net/gephi
-wget https://gephi.org/users/download/
-gephifile=`grep -m 1 -o http.*tar.gz index.html`
-rm index.html
-wget $gephifile
-mkdir -p ~/bin
-tar -C ~/bin -xf gephi-*
-rm gephi-*
-# TODO: put shortcut in Gnome menus
-
+flatpak install gephi
 
 # Dropbox
 # Latest version
