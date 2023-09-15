@@ -259,7 +259,7 @@ rm $rsfname
 # Quarto (latest version)
 # I could not scrape the filename for the latest version
 # It is computed with JavaScript at rendering time.
-wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.0.38/quarto-1.0.38-linux-amd64.deb
+wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.3.450/quarto-1.3.450-linux-amd64.deb
 sudo gdebi -n *.deb
 
 
