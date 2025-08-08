@@ -102,13 +102,19 @@ fi
 # As an alternative, it might be useful to use aptitude-robot
 # packages no longer available:
 # gnome-do gnome-do-plugins gtg pdfshuffler 
-sudo apt-get install apt-transport-https ccache csvkit guake gimp gparted htop keepass2 unison unison-gtk gftp libssl-dev meld playonlinux virtualbox virtualbox-qt umbrello recode ssh sshfs tree okular audacity pandoc pandoc-citeproc xdotool xournal ispell xclip git-all timeshift tmux stow zsh
+sudo apt-get install apt-transport-https audacity ccache csvkit expect gftp gimp git-all gparted guake htop ispell keepass2 libssl-dev meld okular otpclient otpclient-cli pandoc pandoc-citeproc playonlinux qpdf recode ssh sshfs stow timeshift tmux tree umbrello unison unison-gtk virtualbox virtualbox-qt xdotool xournal xclip zsh
 
 # Gnome-do became really complicated to install under Mint
 # https://www.linuxcapable.com/how-to-install-gnome-41-desktop-on-linux-mint-20/
 # Check for an alternative launcher
 # ulauncher looks good https://ulauncher.io/
 sudo apt install ulauncher
+
+# PostgreSQL database modeler
+sudo aptitude -r install pgmodeler
+
+# Gnome Maps
+sudo aptitude -r install gnome-maps
 
 # Clipboard manager
 sudo aptitude -r install copyq
@@ -136,11 +142,12 @@ sudo flatpak install Minder
 sudo flatpak install pdfchain
 
 # Messaging
-sudo flatpak install Skype
+# sudo flatpak install Skype
 sudo flatpak install telegram
 
 # Git interface
-sudo flatpak install gitahead
+# GitAhead continued by gittyup
+# sudo flatpak install gitahead
 
 # Mattermost desktop
 sudo flatpak install mattermost
@@ -220,6 +227,9 @@ sudo aptitude -ry install texlive-full perl-tk
 # Core R, recommended and development packages (for compilation of sources)
 sudo aptitude -ry install r-base r-base-dev r-recommended
 
+# Command-line shell interface to R
+sudo aptitude -ry install littler
+
 # Bridge to the System Package Manager (bspm)
 # https://enchufa2.github.io/bspm/
 sudo add-apt-repository ppa:marutter/rrutter4.0   # R v4.0 and higher
@@ -252,7 +262,7 @@ esac
 
 
 rsfname=rstudio-$rsversion-$rsarch.deb
-wget https://download1.rstudio.org/desktop/$ubuntu_codename/$rsarch/$rsfname
+wget https://download1.rstudio.org/electron/$ubuntu_codename/$rsarch/$rsfname
 sudo gdebi -n $rsfname
 rm $rsfname
 
@@ -273,21 +283,22 @@ flatpak install gephi
 
 # Dropbox
 # Latest version
-wget https://linux.dropbox.com/packages/ubuntu/
-case $arch in
-	i386)
-		dbarch=$arch;;
-	*)
-		dbarch='amd64'
-esac
-
-dbsuffix=`grep -o dropbox[_\.0-9]*$dbarch.deb index.html | tail -1`
-wget https://linux.dropbox.com/packages/ubuntu/$dbsuffix
-rm index.html
-sudo aptitude -r install libpango1.0-0  # dependency
-sudo dpkg -i dropbox*
-rm dropbox*
-sudo aptitude -r install nemo-dropbox
+sudo aptitude -ry install nemo-dropbox
+# wget https://linux.dropbox.com/packages/ubuntu/
+# case $arch in
+#	i386)
+#		dbarch=$arch;;
+#	*)
+#		dbarch='amd64'
+#esac
+#
+#dbsuffix=`grep -o dropbox[_\.0-9]*$dbarch.deb index.html | tail -1`
+#wget https://linux.dropbox.com/packages/ubuntu/$dbsuffix
+#rm index.html
+#sudo aptitude -r install libpango1.0-0  # dependency
+#sudo dpkg -i dropbox*
+#rm dropbox*
+#sudo aptitude -r install nemo-dropbox
 
 
 # yEd graph editor
@@ -305,15 +316,17 @@ sudo flatpak install zotero
 ## Better BibTex for Zotero extension
 ## https://retorque.re/zotero-better-bibtex/installation/
 wget https://github.com/retorquere/zotero-better-bibtex/releases/latest
-bbtfile=`grep -m 1 -o 'zotero[-a-z0-9\.]*xpi' latest`
-vnumber=`echo $bbtfile | grep -o -P '[\d\.]*(?=\.)'`
-rm latest
-wget https://github.com/retorquere/zotero-better-bibtex/releases/download/v$vnumber/$bbtfile
+bbtver=`grep -oP -m 1 'v\d[\d\.]*' latest`
+wget https://github.com/retorquere/zotero-better-bibtex/releases/expanded_assets/$bbtver
+bbtfile=`grep -m 1 -o 'zotero[-a-z0-9\.]*xpi' $bbtver`
+wget https://github.com/retorquere/zotero-better-bibtex/releases/download/$bbtver/$bbtfile
+rm latest $bbtver
 ## Manually install the extension from Zotero
 ## Tools > Add-ons > Extensions > Gear (top-right) > Install Add-on From File... Choose downloaded .xpi and install.
 ## Close Zotero and remove file.
 
 ## PubPeer Zotero extension
+## https://github.com/PubPeerFoundation/pubpeer_zotero_plugin?tab=readme-ov-file
 wget https://objects.githubusercontent.com/github-production-release-asset-2e65be/192403061/62ee0641-8842-47b0-820b-f88b559e4504?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20221109%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20221109T095427Z&X-Amz-Expires=300&X-Amz-Signature=634fec0fef9bf38500ea0b5efdf3640784930fd5c97a20193f13d8299065dc68&X-Amz-SignedHeaders=host&actor_id=0&key_id=0&repo_id=192403061&response-content-disposition=inline%3B%20filename%3Dzotero-pubpeer-0.0.14.xpi&response-content-type=application%2Fx-xpinstall
 ## Manually install the extension from Zotero
 
@@ -341,8 +354,6 @@ sudo flatpak install logseq
 sudo aptitude -r install nextcloud-desktop
 
 
-# Mega sync
-
 # OBS Studio
 
 # CopyQ clipboard manager
@@ -362,7 +373,7 @@ curl --remote-name https://prerelease.keybase.io/keybase_amd64.deb
 sudo apt install ./keybase_amd64.deb
 rm keybase_amd64.deb
 
-
+# Mega sync
 ## Mega Sync with nemo extension
 curl --remote-name https://mega.nz/linux/repo/xUbuntu_22.04/amd64/megasync-xUbuntu_22.04_amd64.deb
 sudo apt install ./megasync-xUbuntu_22.04_amd64.deb
@@ -398,9 +409,12 @@ pip3 install -U radian
 
 
 ## UHK Agent
-wget https://github.com/UltimateHackingKeyboard/agent/releases/download/v2.0.1/UHK.Agent-2.0.1-linux-x86_64.AppImage
-mv UHK.Agent-2.0.1-linux-x86_64.AppImage ~/.local/bin
-chmod 774 .local/bin/UHK.Agent-2.0.1-linux-x86_64.AppImage
+wget https://github.com/UltimateHackingKeyboard/agent/releases
+uhkpath=`grep -o "UltimateHackingKeyboard/.*\.AppImage" releases`
+wget https://github.com/$uhkpath
+rm releases
+mv UHK.Agent-* ~/.local/bin
+chmod 774 .local/bin/UHK.Agent-*
 ## Make a menu shortcut
 
 
@@ -432,7 +446,7 @@ sudo aptitude -r install fonts-jetbrains-mono
 
 
 ## TODO:
-## Configure guake to be run at the begining of the session and get the transparency right
+## Configure guake to be run at the begining of the session and get the transparency right (~20%)
 
 # ## Default shell
 # Done during installation
@@ -464,6 +478,8 @@ sudo aptitude -r install fonts-jetbrains-mono
 rsync -azv --delete .config/copyq/ ~/.config/copyq
 
 
+## OTP client
+# Restore existing data base at ~/Work/logistica/otp_database.enc
 
 
 ########################
