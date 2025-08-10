@@ -424,9 +424,9 @@ wget https://github.com/rupa/z/archive/refs/heads/master.zip
 unzip master.zip -d Work/bin
 rm master.zip
 
-## radian (FAILED. investigate later)
-sudo aptitude -r install python3-pip
-pip3 install -U radian
+## radian
+sudo aptitude -r install python3-venv python3-pip pipx
+pipx install radian
 
 
 ## UHK Agent
