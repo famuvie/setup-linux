@@ -102,7 +102,10 @@ fi
 # As an alternative, it might be useful to use aptitude-robot
 # packages no longer available:
 # gnome-do gnome-do-plugins gtg pdfshuffler 
-sudo apt-get install apt-transport-https audacity ccache csvkit expect gftp gimp git-all gparted guake htop ispell keepass2 libssl-dev meld okular otpclient otpclient-cli pandoc pandoc-citeproc playonlinux qpdf recode ssh sshfs stow timeshift tmux tree umbrello unison unison-gtk virtualbox virtualbox-qt xdotool xournal xclip zsh
+sudo apt-get install apt-transport-https audacity ccache csvkit expect gftp gimp git-all gparted guake htop ispell keepass2 libssl-dev meld okular otpclient otpclient-cli pandoc playonlinux qpdf recode ssh sshfs stow timeshift tmux tree umbrello unison unison-gtk virtualbox virtualbox-qt xdotool xournal xclip zsh
+
+# Gdebi CLI package installer (handles dependencies)
+sudo aptitude -ry install gdebi
 
 # Gnome-do became really complicated to install under Mint
 # https://www.linuxcapable.com/how-to-install-gnome-41-desktop-on-linux-mint-20/
@@ -136,21 +139,31 @@ sudo aptitude -r install ttf-mscorefonts-installer
 # Replace freemind by Minder (distributed as a flatpak package)
 # Imports from Freemind
 # https://github.com/phase1geo/Minder
-sudo flatpak install Minder
+# flatpak install Minder
+sudo aptitude -r install minder
+
 
 # PDF tools
-sudo flatpak install pdfchain
+# flatpak install pdfchain
+sudo aptitude -r install pdfchain
+
 
 # Messaging
-# sudo flatpak install Skype
-sudo flatpak install telegram
+# flatpak install Skype
+flatpak install flathub org.telegram.desktop -y
 
 # Git interface
 # GitAhead continued by gittyup
-# sudo flatpak install gitahead
+# flatpak install gitahead
+flatpak install Gittyup
 
 # Mattermost desktop
-sudo flatpak install mattermost
+flatpak install Mattermost
+
+# Getting Things Gnome!
+# https://wiki.gnome.org/Apps/GTG
+flatpak install gtg
+
 
 # VSCodium
 ## https://vscodium.com/
@@ -163,10 +176,6 @@ sudo echo 'deb [ signed-by=/usr/share/keyrings/vscodium-archive-keyring.gpg ] ht
     | sudo tee /etc/apt/sources.list.d/vscodium.list
 ## Update then install vscodium (if you want vscodium-insiders, then replace codium by codium-insiders):
 sudo apt update && sudo apt install codium
-
-# Getting Things Gnome!
-# https://wiki.gnome.org/Apps/GTG
-sudo flatpak install gtg
 
 # Hamster time tracker
 # https://github.com/projecthamster/hamster/wiki
@@ -262,15 +271,27 @@ esac
 
 
 rsfname=rstudio-$rsversion-$rsarch.deb
-wget https://download1.rstudio.org/electron/$ubuntu_codename/$rsarch/$rsfname
+# wget https://download1.rstudio.org/electron/$ubuntu_codename/$rsarch/$rsfname
+wget https://download1.rstudio.org/electron/jammy/$rsarch/$rsfname
 sudo gdebi -n $rsfname
 rm $rsfname
 
+# Positron
+wget https://positron.posit.co/download
+positronversion=`grep -Eo -m1 '[[:digit:]]{4}\\.[[:digit:]]{2}\\.[[:digit:]]+-[[:digit:]]+' download | head -n 1`
+positronfname=Positron-$positronversion-x64.deb
+wget https://cdn.posit.co/positron/releases/deb/x86_64/$positronfname
+sudo gdebi -n $positronfname
+rm $positronfname
+
 # Quarto (latest version)
-# I could not scrape the filename for the latest version
-# It is computed with JavaScript at rendering time.
-wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.3.450/quarto-1.3.450-linux-amd64.deb
-sudo gdebi -n *.deb
+wget https://github.com/quarto-dev/quarto-cli/releases/
+qver=`grep -Eo -m1 'v[[:digit:]]+\\.[[:digit:]]+\\.[[:digit:]]+' index.html | head -n 1`
+qfn=quarto-`echo $qver | sed 's/v//g'`-linux-amd64.deb
+wget https://github.com/quarto-dev/quarto-cli/releases/download/$qver/$qfn
+sudo gdebi -n $qfn
+rm index.html
+rm $qfn
 
 
 # Geographical libraries GDAL and Proj4
@@ -279,27 +300,14 @@ sudo aptitude -ry install libgdal-dev libproj-dev
 
 # Gephi: Graph Viz interactive visualization 
 # https://gephi.org/
-flatpak install gephi
+flatpak install org.gephi.Gephi -y
 
 # Dropbox
 # Latest version
+wget -O - "https://www.dropbox.com/download?plat=lnx.x86_64" | tar xzf -
+.dropbox-dist/dropboxd
+## Follow up instructions
 sudo aptitude -ry install nemo-dropbox
-# wget https://linux.dropbox.com/packages/ubuntu/
-# case $arch in
-#	i386)
-#		dbarch=$arch;;
-#	*)
-#		dbarch='amd64'
-#esac
-#
-#dbsuffix=`grep -o dropbox[_\.0-9]*$dbarch.deb index.html | tail -1`
-#wget https://linux.dropbox.com/packages/ubuntu/$dbsuffix
-#rm index.html
-#sudo aptitude -r install libpango1.0-0  # dependency
-#sudo dpkg -i dropbox*
-#rm dropbox*
-#sudo aptitude -r install nemo-dropbox
-
 
 # yEd graph editor
 #http://www.yworks.com/en/products_yed_download.html
@@ -311,7 +319,7 @@ sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/i
 
 ## Zotero
 ## Config the data-directory to point to ~/Work/logistica/Zotero
-sudo flatpak install zotero
+flatpak install -y org.zotero.Zotero
 
 ## Better BibTex for Zotero extension
 ## https://retorque.re/zotero-better-bibtex/installation/
@@ -327,8 +335,16 @@ rm latest $bbtver
 
 ## PubPeer Zotero extension
 ## https://github.com/PubPeerFoundation/pubpeer_zotero_plugin?tab=readme-ov-file
-wget https://objects.githubusercontent.com/github-production-release-asset-2e65be/192403061/62ee0641-8842-47b0-820b-f88b559e4504?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20221109%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20221109T095427Z&X-Amz-Expires=300&X-Amz-Signature=634fec0fef9bf38500ea0b5efdf3640784930fd5c97a20193f13d8299065dc68&X-Amz-SignedHeaders=host&actor_id=0&key_id=0&repo_id=192403061&response-content-disposition=inline%3B%20filename%3Dzotero-pubpeer-0.0.14.xpi&response-content-type=application%2Fx-xpinstall
-## Manually install the extension from Zotero
+wget https://github.com/PubPeerFoundation/pubpeer_zotero_plugin/releases/
+ppzver=`grep -Eo -m1 'v[[:digit:]]+\\.[[:digit:]]+\\.[[:digit:]]+' index.html | head -n 1`
+ppzfn=zotero-pubpeer-`echo $ppzver | sed 's/v//g'`.xpi
+wget https://github.com/PubPeerFoundation/pubpeer_zotero_plugin/releases/download/$ppzver/$ppzfn
+## Install manually and then remove ancillary files
+rm index.html $ppzfn
+
+
+## Chromium
+sudo aptitude -ry install chromium
 
 ###########################
 ### More specific tools ###
@@ -337,7 +353,7 @@ wget https://objects.githubusercontent.com/github-production-release-asset-2e65b
 # athens knowledge base (for reading notes)
 # It's an Appimage file within work/bin, and the data are in work/logistica/notes_athens (backed up)
 # This is no longer maintained. Moved to Logseq now.
-sudo flatpak install logseq
+flatpak install -y com.logseq.Logseq
 
 # pomodoro Applet
 # Linux Mint applet (search and install)
@@ -362,10 +378,10 @@ sudo aptitude -r install nextcloud-desktop
 sudo aptitude -r install copyq 
 
 ## OnlyOffice
-sudo flatpak install onlyoffice
+flatpak install -y onlyoffice
 
 ## Gnote
-sudo aptitude -r install gnote
+sudo aptitude -ry install gnote
 
 
 ## Keybase
@@ -375,35 +391,40 @@ rm keybase_amd64.deb
 
 # Mega sync
 ## Mega Sync with nemo extension
-curl --remote-name https://mega.nz/linux/repo/xUbuntu_22.04/amd64/megasync-xUbuntu_22.04_amd64.deb
-sudo apt install ./megasync-xUbuntu_22.04_amd64.deb
-rm megasync-xUbuntu_22.04_amd64.deb
-curl --remote-name https://mega.nz/linux/repo/xUbuntu_20.04/amd64/nemo-megasync-xUbuntu_20.04_amd64.deb
-sudo apt install ./nemo-megasync-xUbuntu_20.04_amd64.deb
+curl --remote-name https://mega.nz/linux/repo/xUbuntu_24.04/amd64/megasync_5.14.0-2.1_amd64.deb
+sudo apt install ./megasync*
+rm megasync*
+curl --remote-name https://mega.nz/linux/repo/xUbuntu_24.04/amd64/nemo-megasync_5.3.0-2.1_amd64.deb
+sudo apt install ./nemo-megasync*
 rm nemo-megasync-xUbuntu_20.04_amd64.deb
 
 ## Docker
-sudo aptitude -r install docker.io
+sudo aptitude -ry install docker.io
 sudo usermod -aG docker facu  # add user to docker group to run docker without sudo. Login into a new terminal for this to take effect.
 
 # zoom-us-wrapper
 # https://github.com/mdouchement/docker-zoom-us
 # Run with: zoom-us-wrapper zoom at the command line
-docker pull mdouchement/zoom-us:latest  # pull docker image from dockerhub
-docker run -it --rm --volume /usr/local/bin:/target mdouchement/zoom-us:latest install # install the wrapper scripts
+# docker pull mdouchement/zoom-us:latest  # pull docker image from dockerhub
+# docker run -it --rm --volume /usr/local/bin:/target mdouchement/zoom-us:latest install # install the wrapper scripts
+flatpak install -y us.zoom.Zoom
 
 ## MS Teams
-sudo flatpak install microsoft.teams
+# flatpak install microsoft.teams  # no longer available
+# install the progressive web app (PWA) from the web (manually only)
+# https://www.microsoft.com/en-us/microsoft-teams/download-app
 
 
 ## z script directory jumper
 ## https://github.com/rupa/z
 ## The dot file is handled with dotfiles
+## and the binary is backed up with Work/bin files 
+## no need to reinstall.
 wget https://github.com/rupa/z/archive/refs/heads/master.zip
 unzip master.zip -d Work/bin
 rm master.zip
 
-## radian
+## radian (FAILED. investigate later)
 sudo aptitude -r install python3-pip
 pip3 install -U radian
 
@@ -413,7 +434,8 @@ wget https://github.com/UltimateHackingKeyboard/agent/releases
 uhkpath=`grep -o "UltimateHackingKeyboard/.*\.AppImage" releases`
 wget https://github.com/$uhkpath
 rm releases
-mv UHK.Agent-* ~/.local/bin
+mkdir -p ~/.local/bin
+mv UHK.Agent-* ~/.local/bin/
 chmod 774 .local/bin/UHK.Agent-*
 ## Make a menu shortcut
 
