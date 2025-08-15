@@ -160,6 +160,9 @@ flatpak install Gittyup
 # Mattermost desktop
 flatpak install Mattermost
 
+# Local Send
+flatpak install -y LocalSend
+
 # Getting Things Gnome!
 # https://wiki.gnome.org/Apps/GTG
 flatpak install gtg
