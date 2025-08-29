@@ -321,8 +321,17 @@ sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/i
 
 
 ## Zotero
+## flatpak install -y org.zotero.Zotero  ## this started to give segmentation faults
+## Better install the original package rather than rely on someone else's packaging
+wget 'https://www.zotero.org/download/client/dl?channel=release&platform=linux-x86_64'
+tar xf dl*
+rm 'dl?channel=release&platform=linux-x86_64'
+sudo mv Zotero* /opt/zotero
+sudo chown -R root:root /opt/zotero
+sudo /opt/zotero/set_launcher_icon
+ln -s /opt/zotero/zotero.desktop ~/.local/share/applications/zotero.desktop
 ## Config the data-directory to point to ~/Work/logistica/Zotero
-flatpak install -y org.zotero.Zotero
+## And set up syncronisation
 
 ## Better BibTex for Zotero extension
 ## https://retorque.re/zotero-better-bibtex/installation/
